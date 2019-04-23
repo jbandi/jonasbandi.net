@@ -5,7 +5,7 @@ title: 'Thought Leadering Considered Harmful'
 description: 'This is dummy description. It has been placed here solely to demonstrate the look and feel of finished, typeset text.'
 published: true
 author: 'Joe Gatsby'
-banner: './banner.png'
+banner: './banner.jpg'
 
 ---
 
@@ -14,7 +14,7 @@ This exists to populate GraphQL fields and avoid null errors. It should contain 
 Fusce ac urna egestas mi ornare rutrum. Ut fringilla, mauris
 non vulputate luctus, nunc tortor tempus nunc, ut tincidunt mi
 magna id nulla. Nunc id **convallis metus**. Pellentesque at laoreet
-ex. Vestibulum hendrerit, nibh eget [tristique finibus](/), nibh eros
+ex. Vestibulum hendrerit, nibh eget [tristique finibus][1], nibh eros
 cursus lacus, eget semper nisi libero eu libero.
 
 Integer condimentum _aliquam massa_, id aliquet ante ullamcorper at.
@@ -22,7 +22,7 @@ Mauris nibh mi, eleifend nec venenatis et, mattis et felis. Etiam
 fringilla libero sit amet tortor congue, et _**tempor tortor**_ ullamcorper.
 Phasellus pretium pharetra tortor.
 
-```jsx
+```jsx {3}
 // footer.jsx
 import React from 'react'
 
@@ -56,14 +56,14 @@ lectus. Morbi sit amet sem a est rhoncus aliquam. Pellentesque nibh libero, pell
 ut leo et, scelerisque interdum augue.
 
 ![Example](./example.png)
-
+ 
 ## Lorem ipsum dolor sit amet
 
 Aenean fringilla sapien vitae maximus lobortis. Vivamus luctus purus nisi. Aenean quis
 ipsum turpis. Ut ut rutrum orci. Duis in mi lacus. Nullam rhoncus at nulla eu aliquam.
 Curabitur vitae augue justo.
 
-```css
+```css {0}
 /* styles.css */
 a {
   cursor: pointer;
@@ -95,3 +95,7 @@ bibendum viverra. Donec sodales fringilla sapien vitae tempor.
 Quisque massa risus, vulputate a ullamcorper eget, semper ac
 orci. Aenean arcu massa, consectetur sed arcu id, consequat ullamcorper nisi. Sed sit
 amet semper turpis, sit amet tincidunt felis.
+
+[1]:	/
+
+[image-1]:	./example.png
