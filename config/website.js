@@ -6,7 +6,7 @@ module.exports = {
   siteUrl: 'https://www.jonasbandi.net', // Domain of your site. No trailing slash!
   siteLanguage: 'en', // Language Tag on <html> element
   siteLogo: 'images/favicon.png', // Used for SEO and manifest, path to your image you placed in the 'static' folder
-  siteDescription: 'Home Page of Jonas Bandi',
+  siteDescription: 'Homepage of Jonas Bandi',
   minibio: `
     <strong>Jonas Bandi</strong> is an enthusiastic software professional and teacher.
   `,

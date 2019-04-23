@@ -15,13 +15,13 @@ const Footer = ({ author, noSubscribeForm }) => (
         }
       `}
     >
-      {!noSubscribeForm && (
-        <div>
-          <SubscribeForm />
+      {/*{!noSubscribeForm && (*/}
+      {/*  <div>*/}
+      {/*    <SubscribeForm />*/}
           <br />
           <br />
-        </div>
-      )}
+      {/*  </div>*/}
+      {/*)}*/}
       <div
         css={css`
           display: flex;

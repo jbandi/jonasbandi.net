@@ -2,6 +2,8 @@ import React from 'react'
 import { Link } from 'gatsby'
 import { css } from '@emotion/core'
 import theme from '../../config/theme'
+import portrait from '../images/portrait_jonas_bandi.jpg'
+import styles from './Header.module.scss'
 
 import Container from './Container'
 
@@ -38,8 +40,15 @@ const Header = ({
           }
         `}
       >
-        <Link to="/" aria-label="go to homepage" activeClassName="active">
-          {siteTitle}
+        <Link to="/" aria-label="go to homepage" className={styles.header} activeClassName="active"
+          css={css`
+            display: flex;
+            align-items: center;
+          `}
+
+        >
+          <img src={portrait} alt="Jonas Bandi" />{' '}
+          <span>{siteTitle}</span>
         </Link>
         <div
           css={css`
