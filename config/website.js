@@ -3,7 +3,7 @@ module.exports = {
   siteTitle: 'Jonas Bandi', // Navigation and Site Title
   siteTitleAlt: 'Home Page of Jonas Bandi', // Alternative Site title for SEO
   siteTitleShort: 'Jonas Bandi', // short_name for manifest
-  siteUrl: 'https://www.jonasbandi.net/', // Domain of your site. No trailing slash!
+  siteUrl: 'https://www.jonasbandi.net', // Domain of your site. No trailing slash!
   siteLanguage: 'en', // Language Tag on <html> element
   siteLogo: 'images/favicon.png', // Used for SEO and manifest, path to your image you placed in the 'static' folder
   siteDescription: 'Home Page of Jonas Bandi',

@@ -10,6 +10,7 @@ import { fonts } from '../lib/typography'
 import Share from '../components/Share'
 import config from '../../config/website'
 import { bpMaxSM } from '../lib/breakpoints'
+import get from 'lodash/get'
 
 export default function Post({
   data: { site, mdx },
@@ -22,7 +23,10 @@ export default function Post({
 
   return (
     <Layout site={site} frontmatter={mdx.frontmatter}>
-      <SEO frontmatter={mdx.frontmatter} isBlogPost />
+      <SEO frontmatter={mdx.frontmatter}
+           metaImage={get(mdx, 'frontmatter.banner.childImageSharp.fluid.src')}
+           isBlogPost
+      />
       <article
         css={css`
           width: 100%;
