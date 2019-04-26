@@ -58,7 +58,7 @@ const Blog = ({
             {post.frontmatter.banner && (
               <div
                 css={css`
-                  padding: 60px 60px 40px 60px;
+                  padding-bottom: 10px;
                   ${bpMaxSM} {
                     padding: 20px;
                   }

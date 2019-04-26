@@ -1,5 +1,7 @@
+const path = require('path')
 const config = require('./config/website')
 const pathPrefix = config.pathPrefix === '/' ? '' : config.pathPrefix
+const here = (...p) => path.join(__dirname, ...p)
 
 require('dotenv').config({
   path: `.env.${process.env.NODE_ENV}`,
@@ -40,6 +42,9 @@ module.exports = {
     {
       resolve: `gatsby-mdx`,
       options: {
+        defaultLayouts: {
+          default: here('./src/templates/markdown-page.js'),
+        },
         extensions: ['.mdx', '.md', '.markdown'],
         gatsbyRemarkPlugins: [
           {
@@ -119,7 +124,10 @@ module.exports = {
               {
                 allMdx(
                   limit: 1000,
-                  filter: { frontmatter: { published: { ne: false } } }
+                  filter: { 
+                    frontmatter: { published: { ne: false } }
+                    fileAbsolutePath: {regex: "//content/blog//"}
+                  }
                   sort: { order: DESC, fields: [frontmatter___date] }
                 ) {
                   edges {

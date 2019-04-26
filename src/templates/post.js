@@ -65,7 +65,6 @@ export default function Post({
           {banner && (
             <div
               css={css`
-                padding: 30px;
                 ${bpMaxSM} {
                   padding: 0;
                 }
@@ -94,29 +93,29 @@ export default function Post({
   )
 }
 
-export const pageQuery = graphql`
-  query($id: String!) {
-    site {
-      ...site
-    }
-    mdx(fields: { id: { eq: $id } }) {
-      frontmatter {
-        title
-        date(formatString: "MMMM DD, YYYY")
-        author
-        banner {
-          childImageSharp {
-            fluid(maxWidth: 900) {
-              ...GatsbyImageSharpFluid_withWebp_tracedSVG
-            }
-          }
-        }
-        slug
-        keywords
-      }
-      code {
-        body
-      }
-    }
-  }
-`
+// export const pageQuery = graphql`
+//   query($id: String!) {
+//     site {
+//       ...site
+//     }
+//     mdx(fields: { id: { eq: $id } }) {
+//       frontmatter {
+//         title
+//         date(formatString: "MMMM DD, YYYY")
+//         author
+//         banner {
+//           childImageSharp {
+//             fluid(maxWidth: 900) {
+//               ...GatsbyImageSharpFluid_withWebp_tracedSVG
+//             }
+//           }
+//         }
+//         slug
+//         keywords
+//       }
+//       code {
+//         body
+//       }
+//     }
+//   }
+// `
