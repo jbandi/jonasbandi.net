@@ -1,6 +1,6 @@
 import React from 'react'
-import Container from 'components/container'
-import SEO from 'components/seo'
+import Container from '../components/Container'
+import SEO from '../components/SEO'
 // import Layout from 'components/layout'
 // import BigHero from 'components/big-hero'
 // import theme from '../../config/theme'
