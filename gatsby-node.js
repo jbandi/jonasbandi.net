@@ -35,32 +35,51 @@ const createPosts = (createPage, createRedirect, edges) => {
 
 exports.createPages = ({ actions, graphql }) =>
   graphql(`
-    query {
-      allMdx(
-        filter: { 
-          frontmatter: { published: { ne: false } }
-          fileAbsolutePath: {regex: "//content/blog//"} 
+    fragment PostDetails on Mdx {
+      fileAbsolutePath
+      id
+      parent {
+        ... on File {
+          name
+          sourceInstanceName
         }
-        sort: { order: DESC, fields: [frontmatter___date] }
+      }
+      excerpt(pruneLength: 250)
+      fields {
+        title
+        slug
+        description
+        date
+        redirects
+      }
+      code {
+        scope
+      }
+    }
+    query {
+      blog: allMdx(
+        filter: {
+          frontmatter: {published: {ne: false}}
+          fileAbsolutePath: {regex: "//content/blog//"}
+        }
+        sort: {order: DESC, fields: [frontmatter___date]}
       ) {
         edges {
           node {
-            id
-            parent {
-              ... on File {
-                name
-                sourceInstanceName
-              }
-            }
-            excerpt(pruneLength: 250)
-            fields {
-              title
-              slug
-              date
-            }
-            code {
-              scope
-            }
+            ...PostDetails
+          }
+        }
+      }
+      devlinks: allMdx(
+        filter: {
+          frontmatter: {published: {ne: false}}
+          fileAbsolutePath: {regex: "//content/devlinks//"}
+        }
+        sort: {order: DESC, fields: [frontmatter___date]}
+      ) {
+        edges {
+          node {
+            ...PostDetails
           }
         }
       }
@@ -70,14 +89,20 @@ exports.createPages = ({ actions, graphql }) =>
       return Promise.reject(errors)
     }
 
-    if (_.isEmpty(data.allMdx)) {
+    if (_.isEmpty(data.devlinks)) {
       return Promise.reject('There are no posts!')
     }
 
-    const { edges } = data.allMdx
+    const { blog, devlinks } = data
     const { createRedirect, createPage } = actions
-    createPosts(createPage, createRedirect, edges)
-    createPaginatedPages(actions.createPage, edges, '/blog', {
+
+    createPosts(createPage, createRedirect, blog.edges)
+    createPaginatedPages(actions.createPage, blog.edges, '/blog', {
+      categories: [],
+    })
+
+    createPosts(createPage, createRedirect, devlinks.edges)
+    createPaginatedPagesDevlinks(actions.createPage, devlinks.edges, '/devlinks', {
       categories: [],
     })
   })
@@ -128,6 +153,43 @@ const createPaginatedPages = (createPage, edges, pathPrefix, context) => {
   })
 }
 
+
+const createPaginatedPagesDevlinks = (createPage, edges, pathPrefix, context) => {
+  const pages = edges.reduce((acc, value, index) => {
+    const pageIndex = Math.floor(index / PAGINATION_OFFSET)
+
+    if (!acc[pageIndex]) {
+      acc[pageIndex] = []
+    }
+
+    acc[pageIndex].push(value.node.id)
+
+    return acc
+  }, [])
+
+  pages.forEach((page, index) => {
+    const previousPagePath = `${pathPrefix}/${index + 1}`
+    const nextPagePath = index === 1 ? pathPrefix : `${pathPrefix}/${index - 1}`
+
+    createPage({
+      path: index > 0 ? `${pathPrefix}/${index}` : `${pathPrefix}`,
+      component: path.resolve(`src/templates/devlinks.js`),
+      context: {
+        pagination: {
+          page,
+          nextPagePath: index === 0 ? null : nextPagePath,
+          previousPagePath:
+            index === pages.length - 1 ? null : previousPagePath,
+          pageCount: pages.length,
+          pathPrefix,
+        },
+        ...context,
+      },
+    })
+  })
+}
+
+
 exports.onCreateNode = ({ node, getNode, actions }) => {
   const { createNodeField } = actions
 
@@ -135,12 +197,21 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
     const parent = getNode(node.parent)
     const titleSlugged = _.join(_.drop(parent.name.split('-'), 3), '-')
 
+
+    let slugPrefix = 'test';
+    if (node.fileAbsolutePath.includes('content/blog/')) {
+      slugPrefix = `blog`
+    }
+    else if (node.fileAbsolutePath.includes('content/devlinks/')) {
+      slugPrefix = `devlinks`
+    }
+
     const slug =
       parent.sourceInstanceName === 'legacy'
-        ? `blog/${node.frontmatter.date
+        ? `${slugPrefix}/${node.frontmatter.date
             .split('T')[0]
             .replace(/-/g, '/')}/${titleSlugged}`
-        : 'blog/' + node.frontmatter.slug || titleSlugged
+        : slugPrefix  + '/' + node.frontmatter.slug || titleSlugged
 
     createNodeField({
       name: 'id',

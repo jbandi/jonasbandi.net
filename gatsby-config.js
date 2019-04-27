@@ -40,6 +40,13 @@ module.exports = {
       },
     },
     {
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        path: `${__dirname}/content/devlinks`,
+        name: 'devlinks',
+      },
+    },
+    {
       resolve: `gatsby-mdx`,
       options: {
         defaultLayouts: {

@@ -1,9 +1,9 @@
 ---
-slug: demo-04
+slug: demo-66
 date: 2019-01-13
 title: 'Thought Leadering Considered Harmful'
 description: 'This is dummy description. It has been placed here solely to demonstrate the look and feel of finished, typeset text.'
-published: false
+published: true
 author: 'Joe Gatsby'
 banner: './banner.jpg'
 
