@@ -7,7 +7,6 @@ const reset = css`
     margin: 0;
   }
   ul, ol {
-    list-style-position: inside;
     margin-left: 0;
     font-size: ${typography.baseFontSize};
   }

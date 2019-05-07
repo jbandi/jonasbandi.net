@@ -7,6 +7,7 @@ import SEO from '../components/SEO'
 import Layout from '../components/Layout'
 import Link from '../components/Link'
 import { bpMaxSM } from '../lib/breakpoints'
+import defaultDevLinksImage from '../static/devlinks.png'
 
 const Blog = ({
   data: { site, allMdx },
@@ -28,7 +29,9 @@ const Blog = ({
     <Layout site={site}>
       <SEO />
       <Container noVerticalPadding>
-        {posts.map(({ node: post }) => (
+        {posts.map(({ node: post }) => {
+
+          return (
           <div
             key={post.id}
             css={css`
@@ -72,6 +75,9 @@ const Blog = ({
                 </Link>
               </div>
             )}
+            {/*{!post.frontmatter.banner && (*/}
+            {/*  <img src={defaultDevLinksImage}/>*/}
+            {/*)}*/}
             <h2
               css={css`
                 margin-top: 30px;
@@ -85,13 +91,14 @@ const Blog = ({
                 {post.frontmatter.title}
               </Link>
             </h2>
-            {/* <small>{post.frontmatter.date}</small> */}
+             <small>{post.frontmatter.date}</small>
             <p
               css={css`
                 margin-top: 10px;
               `}
             >
-              {post.excerpt}
+              {/*{post.excerpt}*/}
+              Topics: {post.fields.description}
             </p>{' '}
             <Link
               to={`/${post.fields.slug}`}
@@ -100,7 +107,7 @@ const Blog = ({
               Read Article →
             </Link>
           </div>
-        ))}
+        )})}
         <br />
         <br />
         <div>
@@ -138,9 +145,10 @@ export const pageQuery = graphql`
           excerpt(pruneLength: 300)
           id
           fields {
-            title
+            title 
             slug
             date
+            description
           }
           parent {
             ... on File {

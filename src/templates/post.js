@@ -11,6 +11,7 @@ import Share from '../components/Share'
 import config from '../../config/website'
 import { bpMaxSM } from '../lib/breakpoints'
 import get from 'lodash/get'
+import defaultDevLinksImage from '../static/devlinks.png'
 
 export default function Post({
   data: { site, mdx },
@@ -21,10 +22,11 @@ export default function Post({
   const title = mdx.frontmatter.title
   const banner = mdx.frontmatter.banner
 
+  let metaImage = get(mdx, 'frontmatter.banner.childImageSharp.fluid.src') || defaultDevLinksImage;
   return (
     <Layout site={site} frontmatter={mdx.frontmatter}>
       <SEO frontmatter={mdx.frontmatter}
-           metaImage={get(mdx, 'frontmatter.banner.childImageSharp.fluid.src')}
+           metaImage={metaImage}
            isBlogPost
       />
       <article
@@ -75,6 +77,9 @@ export default function Post({
                 alt={site.siteMetadata.keywords.join(', ')}
               />
             </div>
+          )}
+          {!banner && (
+            <img src={defaultDevLinksImage}/>
           )}
           <br />
           <MDXRenderer>{mdx.code.body}</MDXRenderer>

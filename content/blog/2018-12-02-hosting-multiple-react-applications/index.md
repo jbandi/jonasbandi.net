@@ -1,5 +1,5 @@
 ---
-slug: 2018-12-02-multiple-react
+slug: multiple-react
 date: 2018-12-02
 title: 'Hosting multiple React applications on the same document'
 description: 'Hosting multiple React applications on the same document. Should be easy ...'
@@ -8,8 +8,6 @@ author: 'Jonas Bandi'
 banner: './banner.jpg'
 
 ---
-
-# Hosting multiple React applications on the same document
 
 One simple/naive approach to break up a big single page application is to split it into different single page applications which then are loaded on the same html document.
 

@@ -2,6 +2,9 @@ const path = require('path')
 
 const _ = require('lodash')
 const paginate = require('gatsby-awesome-pagination')
+
+const { createFilePath } = require('gatsby-source-filesystem')
+
 const PAGINATION_OFFSET = 7
 
 const createPosts = (createPage, createRedirect, edges) => {
@@ -197,21 +200,24 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
     const parent = getNode(node.parent)
     const titleSlugged = _.join(_.drop(parent.name.split('-'), 3), '-')
 
-
+    let slug = 'ERROR';
     let slugPrefix = 'test';
     if (node.fileAbsolutePath.includes('content/blog/')) {
-      slugPrefix = `blog`
+      slugPrefix = `blog`;
+      slug = slugPrefix  + '/' + node.frontmatter.date.split('T')[0] + '-' + node.frontmatter.slug || titleSlugged;
     }
     else if (node.fileAbsolutePath.includes('content/devlinks/')) {
-      slugPrefix = `devlinks`
+      const filePath = createFilePath({ node, getNode, trailingSlash: false });
+      slugPrefix = `devlinks`;
+      slug = slugPrefix + filePath;
     }
 
-    const slug =
-      parent.sourceInstanceName === 'legacy'
-        ? `${slugPrefix}/${node.frontmatter.date
-            .split('T')[0]
-            .replace(/-/g, '/')}/${titleSlugged}`
-        : slugPrefix  + '/' + node.frontmatter.slug || titleSlugged
+    // const slug =
+    //   parent.sourceInstanceName === 'legacy'
+    //     ? `${slugPrefix}/${node.frontmatter.date
+    //         .split('T')[0]
+    //         .replace(/-/g, '/')}/${titleSlugged}`
+    //     : slugPrefix  + '/' + node.frontmatter.date.split('T')[0] + '-' + node.frontmatter.slug || titleSlugged
 
     createNodeField({
       name: 'id',
