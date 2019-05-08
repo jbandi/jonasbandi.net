@@ -1,35 +1,23 @@
-const path = require('path')
+const {generatePathForBlog, generatePathForDevlink} = require('./src/pathFactory');
 
+const path = require('path')
 const _ = require('lodash')
 const paginate = require('gatsby-awesome-pagination')
 
-
 const PAGINATION_OFFSET = 7
 
-const createPosts = (createPage, createRedirect, edges) => {
+const createPosts = (createPage, createRedirect, edges, pathFactoryFunction) => {
   edges.forEach(({ node }, i) => {
     const prev = i === 0 ? null : edges[i - 1].node
     const next = i === edges.length - 1 ? null : edges[i + 1].node
-    const pagePath = node.fields.slug
 
-    const extension = path.extname(node.fileAbsolutePath);
-    const fileName = path.basename(node.fileAbsolutePath, extension)
-
-
-    let slug = 'ERROR';
-    if (node.fileAbsolutePath.includes('content/blog/')) {
-      slug = `blog`  + '/' + node.fields.date.split('T')[0] + '-' + node.fields.slug;
-    }
-    else if (node.fileAbsolutePath.includes('content/devlinks/')) {
-      slug = `devlinks/${fileName}`;
-    }
-
+    const pagePath = pathFactoryFunction(node);
 
     if (node.fields.redirects) {
       node.fields.redirects.forEach(fromPath => {
         createRedirect({
           fromPath,
-          toPath: slug,
+          toPath: pagePath,
           redirectInBrowser: true,
           isPermanent: true,
         })
@@ -111,12 +99,12 @@ exports.createPages = ({ actions, graphql }) =>
     const { blog, devlinks } = data
     const { createRedirect, createPage } = actions
 
-    createPosts(createPage, createRedirect, blog.edges);
+    createPosts(createPage, createRedirect, blog.edges, generatePathForBlog);
     createPaginatedPages(`src/templates/blog.js`, createPage, blog.edges, '/blog', {
       categories: [],
     })
 
-    createPosts(createPage, createRedirect, devlinks.edges);
+    createPosts(createPage, createRedirect, devlinks.edges, generatePathForDevlink);
     createPaginatedPages(`src/templates/devlinks.js`, createPage, devlinks.edges, '/devlinks', {
       categories: [],
     })
@@ -160,7 +148,6 @@ const createPaginatedPages = (pageTemplate, createPage, edges, pathPrefix, conte
           previousPagePath:
             index === pages.length - 1 ? null : previousPagePath,
           pageCount: pages.length,
-          pathPrefix,
         },
         ...context,
       },

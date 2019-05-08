@@ -9,6 +9,8 @@ import Link from '../components/Link'
 import { bpMaxSM } from '../lib/breakpoints'
 import defaultDevLinksImage from '../static/devlinks.png'
 
+const {generatePathForDevlink} = require('../pathFactory');
+
 const Blog = ({
   data: { site, allMdx },
   pageContext: { pagination, categories },
@@ -30,6 +32,8 @@ const Blog = ({
       <SEO />
       <Container noVerticalPadding>
         {posts.map(({ node: post }) => {
+
+          const pagePath = generatePathForDevlink(post);
 
           return (
           <div
@@ -69,7 +73,7 @@ const Blog = ({
               >
                 <Link
                   aria-label={`View ${post.frontmatter.title} article`}
-                  to={`/${post.fields.slug}`}
+                  to={pagePath}
                 >
                   <Img sizes={post.frontmatter.banner.childImageSharp.fluid} />
                 </Link>
@@ -86,7 +90,7 @@ const Blog = ({
             >
               <Link
                 aria-label={`View ${post.frontmatter.title} article`}
-                to={`/${post.fields.slug}`}
+                to={pagePath}
               >
                 {post.frontmatter.title}
               </Link>
@@ -101,7 +105,7 @@ const Blog = ({
               Topics: {post.fields.description}
             </p>{' '}
             <Link
-              to={`/${post.fields.slug}`}
+              to={pagePath}
               aria-label={`view "${post.frontmatter.title}" article`}
             >
               Read Article →
@@ -142,6 +146,7 @@ export const pageQuery = graphql`
     allMdx(sort: { fields: [frontmatter___date], order: DESC }) {
       edges {
         node {
+          fileAbsolutePath
           excerpt(pruneLength: 300)
           id
           fields {
