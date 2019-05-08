@@ -69,7 +69,6 @@ const Header = ({
             }
           `}
         >
-          {/*
           <Link
             to="/blog"
             activeClassName="active"
@@ -77,7 +76,13 @@ const Header = ({
           >
             Blog
           </Link>
-          */}
+          <Link
+            to="/devlinks"
+            activeClassName="active"
+            aria-label="View devlinks page"
+          >
+            DevLinks
+          </Link>
         </div>
       </nav>
     </Container>

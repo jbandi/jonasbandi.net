@@ -60,8 +60,8 @@ export default function Post({
               }
             `}
           >
-            {author && <h3>{author}</h3>}
-            {author && <span>—</span>}
+            {/*{author && <h3>{author}</h3>}*/}
+            {/*{author && <span>—</span>}*/}
             {date && <h3>{date}</h3>}
           </div>
           {banner && (

@@ -7,7 +7,7 @@ const reset = css`
     margin: 0;
   }
   ul, ol {
-    margin-left: 0;
+    margin-left: 15px;
     font-size: ${typography.baseFontSize};
   }
   *,
