@@ -3,7 +3,6 @@ const path = require('path')
 const _ = require('lodash')
 const paginate = require('gatsby-awesome-pagination')
 
-const { createFilePath } = require('gatsby-source-filesystem')
 
 const PAGINATION_OFFSET = 7
 
@@ -13,11 +12,24 @@ const createPosts = (createPage, createRedirect, edges) => {
     const next = i === edges.length - 1 ? null : edges[i + 1].node
     const pagePath = node.fields.slug
 
+    const extension = path.extname(node.fileAbsolutePath);
+    const fileName = path.basename(node.fileAbsolutePath, extension)
+
+
+    let slug = 'ERROR';
+    if (node.fileAbsolutePath.includes('content/blog/')) {
+      slug = `blog`  + '/' + node.fields.date.split('T')[0] + '-' + node.fields.slug;
+    }
+    else if (node.fileAbsolutePath.includes('content/devlinks/')) {
+      slug = `devlinks/${fileName}`;
+    }
+
+
     if (node.fields.redirects) {
       node.fields.redirects.forEach(fromPath => {
         createRedirect({
           fromPath,
-          toPath: pagePath,
+          toPath: slug,
           redirectInBrowser: true,
           isPermanent: true,
         })
@@ -99,13 +111,13 @@ exports.createPages = ({ actions, graphql }) =>
     const { blog, devlinks } = data
     const { createRedirect, createPage } = actions
 
-    createPosts(createPage, createRedirect, blog.edges)
-    createPaginatedPages(actions.createPage, blog.edges, '/blog', {
+    createPosts(createPage, createRedirect, blog.edges);
+    createPaginatedPages(`src/templates/blog.js`, createPage, blog.edges, '/blog', {
       categories: [],
     })
 
-    createPosts(createPage, createRedirect, devlinks.edges)
-    createPaginatedPagesDevlinks(actions.createPage, devlinks.edges, '/devlinks', {
+    createPosts(createPage, createRedirect, devlinks.edges);
+    createPaginatedPages(`src/templates/devlinks.js`, createPage, devlinks.edges, '/devlinks', {
       categories: [],
     })
   })
@@ -121,7 +133,7 @@ exports.onCreateWebpackConfig = ({ actions }) => {
   })
 }
 
-const createPaginatedPages = (createPage, edges, pathPrefix, context) => {
+const createPaginatedPages = (pageTemplate, createPage, edges, pathPrefix, context) => {
   const pages = edges.reduce((acc, value, index) => {
     const pageIndex = Math.floor(index / PAGINATION_OFFSET)
 
@@ -140,7 +152,7 @@ const createPaginatedPages = (createPage, edges, pathPrefix, context) => {
 
     createPage({
       path: index > 0 ? `${pathPrefix}/${index}` : `${pathPrefix}`,
-      component: path.resolve(`src/templates/blog.js`),
+      component: path.resolve(pageTemplate),
       context: {
         pagination: {
           page,
@@ -155,69 +167,11 @@ const createPaginatedPages = (createPage, edges, pathPrefix, context) => {
     })
   })
 }
-
-
-const createPaginatedPagesDevlinks = (createPage, edges, pathPrefix, context) => {
-  const pages = edges.reduce((acc, value, index) => {
-    const pageIndex = Math.floor(index / PAGINATION_OFFSET)
-
-    if (!acc[pageIndex]) {
-      acc[pageIndex] = []
-    }
-
-    acc[pageIndex].push(value.node.id)
-
-    return acc
-  }, [])
-
-  pages.forEach((page, index) => {
-    const previousPagePath = `${pathPrefix}/${index + 1}`
-    const nextPagePath = index === 1 ? pathPrefix : `${pathPrefix}/${index - 1}`
-
-    createPage({
-      path: index > 0 ? `${pathPrefix}/${index}` : `${pathPrefix}`,
-      component: path.resolve(`src/templates/devlinks.js`),
-      context: {
-        pagination: {
-          page,
-          nextPagePath: index === 0 ? null : nextPagePath,
-          previousPagePath:
-            index === pages.length - 1 ? null : previousPagePath,
-          pageCount: pages.length,
-          pathPrefix,
-        },
-        ...context,
-      },
-    })
-  })
-}
-
 
 exports.onCreateNode = ({ node, getNode, actions }) => {
   const { createNodeField } = actions
 
   if (node.internal.type === `Mdx`) {
-    const parent = getNode(node.parent)
-    const titleSlugged = _.join(_.drop(parent.name.split('-'), 3), '-')
-
-    let slug = 'ERROR';
-    let slugPrefix = 'test';
-    if (node.fileAbsolutePath.includes('content/blog/')) {
-      slugPrefix = `blog`;
-      slug = slugPrefix  + '/' + node.frontmatter.date.split('T')[0] + '-' + node.frontmatter.slug || titleSlugged;
-    }
-    else if (node.fileAbsolutePath.includes('content/devlinks/')) {
-      const filePath = createFilePath({ node, getNode, trailingSlash: false });
-      slugPrefix = `devlinks`;
-      slug = slugPrefix + filePath;
-    }
-
-    // const slug =
-    //   parent.sourceInstanceName === 'legacy'
-    //     ? `${slugPrefix}/${node.frontmatter.date
-    //         .split('T')[0]
-    //         .replace(/-/g, '/')}/${titleSlugged}`
-    //     : slugPrefix  + '/' + node.frontmatter.date.split('T')[0] + '-' + node.frontmatter.slug || titleSlugged
 
     createNodeField({
       name: 'id',
@@ -246,7 +200,7 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
     createNodeField({
       name: 'slug',
       node,
-      value: slug,
+      value: node.frontmatter.slug,
     })
 
     createNodeField({
