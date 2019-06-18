@@ -133,17 +133,10 @@ const Header = ({
           </NavLink>
           <NavLink
             headerColor={headerColor}
-            to="/talks/"
-            aria-label="View talks page"
+            to="/devlinks/"
+            aria-label="View DevLinks page"
           >
-            Talks
-          </NavLink>
-          <NavLink
-            headerColor={headerColor}
-            to="/workshops/"
-            aria-label="View workshops page"
-          >
-            Workshops
+            DevLinks
           </NavLink>
           <NavLink
             headerColor={headerColor}

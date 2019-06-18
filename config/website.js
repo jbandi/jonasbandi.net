@@ -28,9 +28,8 @@ module.exports = {
   backgroundColor: '#231C42',
 
   // Social component
-  twitter: 'https://twitter.com/kentcdodds/',
-  twitterHandle: '@kentcdodds',
-  github: 'https://github.com/kentcdodds/',
-  linkedin: 'https://www.linkedin.com/in/kentcdodds/',
-  youtube: 'https://www.youtube.com/channel/UCz-BYvuntVRt_VpfR6FKXJw',
+  twitter: 'https://twitter.com/jbandi/',
+  twitterHandle: '@jbandi',
+  github: 'https://github.com/jbandi/',
+  linkedin: 'https://www.linkedin.com/in/jonasbandi/',
 }

@@ -1,15 +1,16 @@
 import React from 'react'
-import Link from '../components/link'
+// import Link from '../components/link'
 import {css} from '@emotion/core'
 import theme from '../../config/theme'
 import {bpMaxSM} from '../lib/breakpoints'
-import SubscribeForm from './forms/subscribe'
-import {Twitter, GitHub, YouTube} from './social'
+// import SubscribeForm from './forms/subscribe'
+// import {Twitter, GitHub, YouTube} from './social'
+import {Twitter, GitHub} from './social'
 import Container from './container'
 
-import Signature from '../images/signature.png'
+// import Signature from '../images/signature.png'
 
-const Footer = ({subscribeForm = <SubscribeForm />}) => (
+const Footer = () => (
   <footer
     css={css`
       background: ${theme.colors.purple_dark};
@@ -30,13 +31,13 @@ const Footer = ({subscribeForm = <SubscribeForm />}) => (
         }
       `}
     >
-      {subscribeForm ? (
-        <div css={{marginTop: -40}}>
-          {subscribeForm}
-          <br />
-          <br />
-        </div>
-      ) : null}
+      {/*{subscribeForm ? (*/}
+      {/*  <div css={{marginTop: -40}}>*/}
+      {/*    {subscribeForm}*/}
+      {/*    <br />*/}
+      {/*    <br />*/}
+      {/*  </div>*/}
+      {/*) : null}*/}
       <div
         css={css`
           display: flex;
@@ -57,18 +58,18 @@ const Footer = ({subscribeForm = <SubscribeForm />}) => (
         <div>
           <Twitter />
           <GitHub />
-          <YouTube />
+          {/*<YouTube />*/}
         </div>
 
-        <Link to="/" aria-label="Return to homepage">
-          <img
-            src={Signature}
-            alt="Kent C. Dodds"
-            css={css`
-              max-width: 100px;
-            `}
-          />
-        </Link>
+        {/*<Link to="/" aria-label="Return to homepage">*/}
+        {/*  <img*/}
+        {/*    src={Signature}*/}
+        {/*    alt="Kent C. Dodds"*/}
+        {/*    css={css`*/}
+        {/*      max-width: 100px;*/}
+        {/*    `}*/}
+        {/*  />*/}
+        {/*</Link>*/}
       </div>
     </Container>
   </footer>
