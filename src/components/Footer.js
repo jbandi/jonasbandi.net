@@ -1,46 +1,74 @@
 import React from 'react'
-import { css } from '@emotion/core'
-import { bpMaxSM } from '../lib/breakpoints'
-import SubscribeForm from './Forms/Subscribe'
-import { Twitter, GitHub } from './Social'
-import Container from './Container'
+import Link from '../components/link'
+import {css} from '@emotion/core'
+import theme from '../../config/theme'
+import {bpMaxSM} from '../lib/breakpoints'
+import SubscribeForm from './forms/subscribe'
+import {Twitter, GitHub, YouTube} from './social'
+import Container from './container'
 
-const Footer = ({ author, noSubscribeForm }) => (
-  <footer>
+import Signature from '../images/signature.png'
+
+const Footer = ({subscribeForm = <SubscribeForm />}) => (
+  <footer
+    css={css`
+      background: ${theme.colors.purple_dark};
+      color: white;
+      margin-top: 70px;
+    `}
+  >
     <Container
       css={css`
         padding-top: 0;
+        padding-bottom: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         ${bpMaxSM} {
           padding-top: 0;
+          flex-direction: column;
         }
       `}
     >
-      {/*{!noSubscribeForm && (*/}
-      {/*  <div>*/}
-      {/*    <SubscribeForm />*/}
+      {subscribeForm ? (
+        <div css={{marginTop: -40}}>
+          {subscribeForm}
           <br />
           <br />
-      {/*  </div>*/}
-      {/*)}*/}
+        </div>
+      ) : null}
       <div
         css={css`
           display: flex;
-          align-items: center;
-          justify-content: space-between;
+          flex-direction: column;
+          align-items: flex-end;
+          div,
+          img {
+            margin: 50px 0;
+            ${bpMaxSM} {
+              margin: 20px 0;
+            }
+          }
+          ${bpMaxSM} {
+            align-items: center;
+          }
         `}
       >
-        <div
-          css={css`
-            font-size: 90%;
-            opacity: 0.7;
-          `}
-        >
-          {author && `${author} \u00A9 ${new Date().getFullYear()}`}
-        </div>
         <div>
           <Twitter />
           <GitHub />
+          <YouTube />
         </div>
+
+        <Link to="/" aria-label="Return to homepage">
+          <img
+            src={Signature}
+            alt="Kent C. Dodds"
+            css={css`
+              max-width: 100px;
+            `}
+          />
+        </Link>
       </div>
     </Container>
   </footer>

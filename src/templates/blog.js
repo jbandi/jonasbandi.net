@@ -1,160 +1,53 @@
-import React from 'react';
-import { graphql } from 'gatsby';
-import Img from 'gatsby-image';
-import { css } from '@emotion/core';
-import Container from 'components/Container';
-import SEO from '../components/SEO';
-import Layout from '../components/Layout';
-import Link from '../components/Link';
-import { bpMaxSM } from '../lib/breakpoints';
+import React from 'react'
+import {graphql, StaticQuery} from 'gatsby'
+import Blog from 'components/blog'
 
-const {generatePathForBlog} = require('../pathFactory');
+function CodingBlog(props) {
+  return <Blog {...props} />
+}
 
-const Blog = ({ data: { site, allMdx }, pageContext: { pagination, categories } }) => {
-  const { page, nextPagePath, previousPagePath } = pagination;
-
-  const posts = page
-    .map(id => allMdx.edges.find(edge => edge.node.id === id && edge.node.parent.sourceInstanceName !== 'pages'))
-    .filter(post => post !== undefined);
-
+export default function CodingBlogWithData(props) {
   return (
-    <Layout site={site}>
-      <SEO />
-      <Container noVerticalPadding>
-        {posts.map(({ node: post }) => {
-
-          const pagePath = generatePathForBlog(post);
-
-          return (
-            <div
-              key={post.id}
-              css={css`
-                :not(:first-of-type) {
-                  margin-top: 20px;
-                  ${bpMaxSM} {
-                    margin-top: 20px;
-                  }
-                }
-                :first-of-type {
-                  margin-top: 20px;
-                  ${bpMaxSM} {
-                    margin-top: 20px;
-                  }
-                }
-                .gatsby-image-wrapper {
-                }
-                background: white;
-                padding: 40px;
-                ${bpMaxSM} {
-                  padding: 20px;
-                }
-                display: flex;
-                flex-direction: column;
-              `}
-            >
-              {post.frontmatter.banner && (
-                <div
-                  css={css`
-                    padding-bottom: 10px;
-                    ${bpMaxSM} {
-                      padding: 20px;
-                    }
-                  `}
-                >
-                  <Link aria-label={`View ${post.frontmatter.title} article`} to={pagePath}>
-                    <Img sizes={post.frontmatter.banner.childImageSharp.fluid} />
-                  </Link>
-                </div>
-              )}
-              <h2
-                css={css`
-                  margin-top: 30px;
-                  margin-bottom: 5px;
-                `}
-              >
-                <Link
-                  aria-label={`View ${post.frontmatter.title} article`}
-                  to={pagePath}
-                >
-                  {post.frontmatter.title}
-                </Link>
-              </h2>
-               <small>{post.frontmatter.date}</small>
-              <p
-                css={css`
-                  margin-top: 15px;
-                `}
-              >
-                {post.excerpt}
-              </p>{' '}
-              <Link to={pagePath} aria-label={`view "${post.frontmatter.title}" article`}>
-                Read Article →
-              </Link>
-            </div>
-          );
-        })}
-        <br />
-        <br />
-        <div>
-          {nextPagePath && (
-            <Link to={nextPagePath} aria-label="View next page">
-              Next Page →
-            </Link>
-          )}
-          {previousPagePath && (
-            <Link to={previousPagePath} aria-label="View previous page">
-              ← Previous Page
-            </Link>
-          )}
-        </div>
-        <hr
-          css={css`
-            margin: 50px 0;
-          `}
-        />
-      </Container>
-    </Layout>
-  );
-};
-
-export default Blog;
-
-export const pageQuery = graphql`
-  query {
-    site {
-      ...site
-    }
-    allMdx(sort: { fields: [frontmatter___date], order: DESC }) {
-      edges {
-        node {
-          fileAbsolutePath
-          excerpt(pruneLength: 300)
-          id
-          fields {
-            title
-            slug
-            date
-          }
-          parent {
-            ... on File {
-              sourceInstanceName
+    <StaticQuery
+      query={graphql`
+        query {
+          allMdx(
+            sort: {fields: [frontmatter___date], order: DESC}
+            filter: {
+              frontmatter: {published: {ne: false}}
+              fileAbsolutePath: {regex: "//content/blog//"}
             }
-          }
-          frontmatter {
-            title
-            date(formatString: "MMMM DD, YYYY")
-            banner {
-              childImageSharp {
-                fluid(maxWidth: 600) {
-                  ...GatsbyImageSharpFluid_withWebp_tracedSVG
+          ) {
+            edges {
+              node {
+                excerpt(pruneLength: 300)
+                id
+                fields {
+                  title
+                  isWriting
+                  slug
+                  date
+                }
+                parent {
+                  ... on File {
+                    sourceInstanceName
+                  }
+                }
+                frontmatter {
+                  title
+                  date(formatString: "MMMM DD, YYYY")
+                  banner {
+                    ...bannerImage640
+                  }
+                  slug
+                  keywords
                 }
               }
             }
-            slug
-            keywords
           }
         }
-      }
-    }
-  }
-`;
+      `}
+      render={data => <CodingBlog data={data} {...props} />}
+    />
+  )
+}

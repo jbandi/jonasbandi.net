@@ -1,12 +1,19 @@
 import React from 'react'
-import { css } from '@emotion/core'
-// import theme from 'prism-react-renderer/themes/vsDarkPlus'
-import theme from 'prism-react-renderer/themes/oceanicNext'
-// import theme from 'prism-react-renderer/themes/nightOwl'
-import Highlight, { defaultProps } from 'prism-react-renderer'
-import { LiveProvider, LiveEditor, LiveError, LivePreview } from 'react-live'
+import {css} from '@emotion/core'
+import theme from 'prism-react-renderer/themes/nightOwl'
+import Highlight, {defaultProps} from 'prism-react-renderer'
 
 const RE = /{([\d,-]+)}/
+
+const wrapperStyles = css`
+  overflow: auto;
+`
+
+const preStyles = css`
+  float: left;
+  min-width: 100%;
+  overflow: initial;
+`
 
 function calculateLinesToHighlight(meta) {
   if (RE.test(meta)) {
@@ -25,33 +32,27 @@ function calculateLinesToHighlight(meta) {
   }
 }
 
-
-const Code = ({ codeString, language, metastring, ...props }) => {
-  if (props['react-live']) {
-    return (
-      <LiveProvider code={codeString} noInline={true}>
-        <LiveEditor />
-        <LiveError />
-        <LivePreview />
-      </LiveProvider>
-    )
-  } else {
-    const shouldHighlightLine = calculateLinesToHighlight(metastring)
-    return (
-      <Highlight
-        {...defaultProps}
-        code={codeString}
-        language={language}
-        theme={theme}
-      >
-        {({ className, style, tokens, getLineProps, getTokenProps }) => (
-          <pre className={className} style={style}>
+function Code({codeString, language, metastring}) {
+  const shouldHighlightLine = calculateLinesToHighlight(metastring)
+  return (
+    <Highlight
+      {...defaultProps}
+      code={codeString}
+      language={language}
+      theme={theme}
+    >
+      {({className, style, tokens, getLineProps, getTokenProps}) => (
+        <div css={wrapperStyles}>
+          <pre className={className} style={style} css={preStyles}>
             {tokens.map((line, i) => (
-              <div {...getLineProps({
-                line,
-                key: i,
-                className: shouldHighlightLine(i) ? 'highlight-line' : '',
-              })}>
+              <div
+                key={i}
+                {...getLineProps({
+                  line,
+                  key: i,
+                  className: shouldHighlightLine(i) ? 'highlight-line' : '',
+                })}
+              >
                 <span
                   css={css`
                     display: inline-block;
@@ -63,15 +64,15 @@ const Code = ({ codeString, language, metastring, ...props }) => {
                   {i + 1}
                 </span>
                 {line.map((token, key) => (
-                  <span {...getTokenProps({ token, key })} />
+                  <span key={key} {...getTokenProps({token, key})} />
                 ))}
               </div>
             ))}
           </pre>
-        )}
-      </Highlight>
-    )
-  }
+        </div>
+      )}
+    </Highlight>
+  )
 }
 
 export default Code

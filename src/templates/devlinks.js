@@ -1,21 +1,22 @@
 import React from 'react'
-import { graphql } from 'gatsby'
+import {graphql} from 'gatsby'
 import Img from 'gatsby-image'
-import { css } from '@emotion/core'
+import {css} from '@emotion/core'
 import Container from '../components/Container'
 import SEO from '../components/SEO'
 import Layout from '../components/Layout'
 import Link from '../components/Link'
-import { bpMaxSM } from '../lib/breakpoints'
-import defaultDevLinksImage from '../static/devlinks.png'
+import {bpMaxSM} from '../lib/breakpoints'
+// import defaultDevLinksImage from '../images/devlinks.png'
 
-const {generatePathForDevlink} = require('../pathFactory');
+// const {generatePathForDevlink} = require('../pathFactory');
 
 const Blog = ({
-  data: { site, allMdx },
-  pageContext: { pagination, categories },
+  data: {site, allMdx},
+  // pageContext: {pagination, categories},
+  pageContext: {pagination},
 }) => {
-  const { page, nextPagePath, previousPagePath } = pagination
+  const {page, nextPagePath, previousPagePath} = pagination
 
   const posts = page
     .map(id =>
@@ -31,87 +32,90 @@ const Blog = ({
     <Layout site={site}>
       <SEO />
       <Container noVerticalPadding>
-        {posts.map(({ node: post }) => {
-
-          const pagePath = generatePathForDevlink(post);
+        {posts.map(({node: post}) => {
+          // const pagePath = generatePathForDevlink(post);
+          const pagePath = post.fields.slug
 
           return (
-          <div
-            key={post.id}
-            css={css`
-              :not(:first-of-type) {
-                margin-top: 20px;
-                ${bpMaxSM} {
+            <div
+              key={post.id}
+              css={css`
+                :not(:first-of-type) {
                   margin-top: 20px;
-                }
-              }
-              :first-of-type {
-                margin-top: 20px;
-                ${bpMaxSM} {
-                  margin-top: 20px;
-                }
-              }
-              .gatsby-image-wrapper {
-              }
-              background: white;
-              padding: 40px;
-              ${bpMaxSM} {
-                padding: 20px;
-              }
-              display: flex;
-              flex-direction: column;
-            `}
-          >
-            {post.frontmatter.banner && (
-              <div
-                css={css`
-                  padding-bottom: 10px;
                   ${bpMaxSM} {
-                    padding: 20px;
+                    margin-top: 20px;
                   }
+                }
+                :first-of-type {
+                  margin-top: 20px;
+                  ${bpMaxSM} {
+                    margin-top: 20px;
+                  }
+                }
+                .gatsby-image-wrapper {
+                }
+                background: white;
+                padding: 40px;
+                ${bpMaxSM} {
+                  padding: 20px;
+                }
+                display: flex;
+                flex-direction: column;
+              `}
+            >
+              {post.frontmatter.banner && (
+                <div
+                  css={css`
+                    padding-bottom: 10px;
+                    ${bpMaxSM} {
+                      padding: 20px;
+                    }
+                  `}
+                >
+                  <Link
+                    aria-label={`View ${post.frontmatter.title} article`}
+                    to={pagePath}
+                  >
+                    <Img
+                      sizes={post.frontmatter.banner.childImageSharp.fluid}
+                    />
+                  </Link>
+                </div>
+              )}
+              {/*{!post.frontmatter.banner && (*/}
+              {/*  <img src={defaultDevLinksImage}/>*/}
+              {/*)}*/}
+              <h2
+                css={css`
+                  margin-top: 30px;
+                  margin-bottom: 10px;
                 `}
               >
                 <Link
                   aria-label={`View ${post.frontmatter.title} article`}
                   to={pagePath}
                 >
-                  <Img sizes={post.frontmatter.banner.childImageSharp.fluid} />
+                  {post.frontmatter.title}
                 </Link>
-              </div>
-            )}
-            {/*{!post.frontmatter.banner && (*/}
-            {/*  <img src={defaultDevLinksImage}/>*/}
-            {/*)}*/}
-            <h2
-              css={css`
-                margin-top: 30px;
-                margin-bottom: 10px;
-              `}
-            >
-              <Link
-                aria-label={`View ${post.frontmatter.title} article`}
-                to={pagePath}
+              </h2>
+              <small>{post.frontmatter.date}</small>
+              <p
+                css={css`
+                  margin-top: 10px;
+                `}
               >
-                {post.frontmatter.title}
+                {/*{post.excerpt}*/}
+                Topics: {post.fields.description}
+              </p>{' '}
+              <Link
+                to={pagePath}
+                aria-label={`view "${post.frontmatter.title}" article`}
+              >
+                Read Article →
               </Link>
-            </h2>
-             <small>{post.frontmatter.date}</small>
-            <p
-              css={css`
-                margin-top: 10px;
-              `}
-            >
-              {/*{post.excerpt}*/}
-              Topics: {post.fields.description}
-            </p>{' '}
-            <Link
-              to={pagePath}
-              aria-label={`view "${post.frontmatter.title}" article`}
-            >
-              Read Article →
-            </Link>
-          </div>
-        )})}
+            </div>
+          )
+        })}
         <br />
         <br />
         <div>
@@ -140,17 +144,14 @@ export default Blog
 
 export const pageQuery = graphql`
   query {
-    site {
-      ...site
-    }
-    allMdx(sort: { fields: [frontmatter___date], order: DESC }) {
+    allMdx(sort: {fields: [frontmatter___date], order: DESC}) {
       edges {
         node {
           fileAbsolutePath
           excerpt(pruneLength: 300)
           id
           fields {
-            title 
+            title
             slug
             date
             description

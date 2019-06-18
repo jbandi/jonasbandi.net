@@ -1,17 +1,59 @@
 import React from 'react'
-import { Link } from 'gatsby'
-import { css } from '@emotion/core'
+import Link from './link'
+import {css} from '@emotion/core'
+import styled from '@emotion/styled'
 import theme from '../../config/theme'
-import portrait from '../images/portrait_jonas_bandi.jpg'
-import styles from './Header.module.scss'
+import {fonts} from '../lib/typography'
+import jonas from '../images/jonas.jpg'
+import MobileNav from './mobile-nav'
+import Container from './container'
+import {bpMaxSM} from '../lib/breakpoints'
+import {lighten} from 'polished'
 
-import Container from './Container'
+function HeaderLink({headerColor, ...props}) {
+  return (
+    <Link
+      activeClassName="active"
+      css={{
+        textDecoration: 'none',
+        color: headerColor ? headerColor : theme.colors.body_color,
+        '&:hover,&:focus': {
+          background:
+            headerColor === theme.colors.white
+              ? 'rgba(40, 28, 77, 0.3)'
+              : lighten(0.4, theme.brand.primary),
+          color:
+            headerColor === theme.colors.white
+              ? 'white'
+              : theme.colors.link_color_hover,
+        },
+      }}
+      {...props}
+    />
+  )
+}
+
+const NavLink = styled(HeaderLink)({
+  padding: '8px 10px',
+  borderRadius: '3px',
+  background: 'transparent',
+  '& + &': {marginLeft: 10},
+  [bpMaxSM]: {
+    display: 'none',
+  },
+  '&.active': {
+    background: 'rgba(40, 28, 77, 0.7)',
+  },
+})
 
 const Header = ({
   dark,
   bgColor = 'none',
   siteTitle,
+  headerLink = '/',
   headerColor = 'black',
+  fixed = false,
+  headerImage = true,
 }) => (
   <header
     css={css`
@@ -19,70 +61,97 @@ const Header = ({
       flex-shrink: 0;
       background: none;
       padding: 30px 0 0 0;
+      ${bpMaxSM} {
+        padding: 35px 0 0 0;
+      }
       background: ${dark ? '#090909' : `${bgColor}` || 'none'};
+      z-index: 10;
+      position: ${fixed ? 'fixed' : 'absolute'};
+      top: 0;
+      font-family: ${fonts.light};
     `}
   >
     <Container noVerticalPadding>
       <nav
-        css={css`
-          width: 100%;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          color: ${headerColor};
-          a {
-            color: ${headerColor ? headerColor : theme.colors.body_color};
-          }
-          a:hover {
-            color: ${headerColor === theme.colors.white
-              ? 'white'
-              : theme.colors.link_color_hover};
-          }
-        `}
+        css={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
       >
-        <Link to="/" aria-label="go to homepage" className={styles.header} activeClassName="active"
-          css={css`
-            display: flex;
-            align-items: center;
-          `}
-
+        <HeaderLink
+          to={headerLink}
+          aria-label="go to homepage"
+          headerColor={headerColor}
+          css={{
+            fontFamily: fonts.regular,
+            display: 'flex',
+            alignItems: 'center',
+            img: {
+              marginBottom: 0,
+              maxWidth: '50px',
+              position: 'absolute',
+              borderRadius: '100%',
+              background:
+                headerColor === '#fff' ? 'rgba(40, 28, 77, 0.7)' : '#f1f1f1',
+            },
+            ':hover, :focus': {
+              background: 'transparent',
+            },
+            span: {
+              transform: headerImage && 'translateX(60px)',
+            },
+          }}
         >
-          <img src={portrait} alt="Jonas Bandi" />{' '}
+          {headerImage && <img src={jonas} alt="Kent C. Dodds" />}{' '}
           <span>{siteTitle}</span>
-        </Link>
+        </HeaderLink>
         <div
           css={css`
             font-size: 16px;
             line-height: 1.25;
             display: flex;
             align-items: center;
-            a {
-              color: ${dark ? '#fbfbfb' : 'rgba(0,0,0,0.85)'};
-              text-decoration: none;
-              & + a {
-                margin-left: 32px;
-              }
-            }
-            .active {
+            .mobile-nav {
               display: none;
               visibility: hidden;
+              ${bpMaxSM} {
+                display: block;
+                visibility: visible;
+              }
             }
           `}
         >
-          <Link
-            to="/blog"
-            activeClassName="active"
+          <MobileNav color={headerColor} />
+          <NavLink
+            headerColor={headerColor}
+            to="/blog/"
             aria-label="View blog page"
           >
             Blog
-          </Link>
-          <Link
-            to="/devlinks"
-            activeClassName="active"
-            aria-label="View devlinks page"
+          </NavLink>
+          <NavLink
+            headerColor={headerColor}
+            to="/talks/"
+            aria-label="View talks page"
           >
-            DevLinks
-          </Link>
+            Talks
+          </NavLink>
+          <NavLink
+            headerColor={headerColor}
+            to="/workshops/"
+            aria-label="View workshops page"
+          >
+            Workshops
+          </NavLink>
+          <NavLink
+            headerColor={headerColor}
+            to="/about/"
+            aria-label="View about page"
+          >
+            About
+          </NavLink>
         </div>
       </nav>
     </Container>
@@ -90,13 +159,3 @@ const Header = ({
 )
 
 export default Header
-
-export const pageQuery = graphql`
-  query {
-    site {
-      siteMetadata {
-        title
-      }
-    }
-  }
-`

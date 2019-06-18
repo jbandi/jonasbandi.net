@@ -1,13 +1,16 @@
-import { css } from '@emotion/core'
+import {css} from '@emotion/core'
 import theme from '../../config/theme'
-import typography, { fonts } from '../lib/typography'
+import typography, {fonts} from '../lib/typography'
 
 const reset = css`
   form {
     margin: 0;
   }
-  ul, ol {
-    margin-left: 15px;
+  ul,
+  ol {
+    #list-style-position: inside;
+    #margin-left: 0;
+    margin-left: 15;
     font-size: ${typography.baseFontSize};
   }
   *,
@@ -29,8 +32,7 @@ const reset = css`
     box-sizing: border-box;
     -ms-overflow-style: scrollbar;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    //scroll-behavior: smooth;
   }
   body {
     color: ${theme.colors.body_color};
@@ -40,17 +42,15 @@ const reset = css`
     color: ${theme.colors.white};
     background-color: ${theme.colors.link_color};
   }
-
   a {
     color: ${theme.colors.link_color};
-    transition: ${theme.transition.ease};
+    transition: all 0.3s ease-in-out;
     text-decoration: none;
     &:hover,
     &:focus {
       color: ${theme.colors.link_color_hover};
     }
   }
-
   a:not([href]):not([tabindex]) {
     color: inherit;
     text-decoration: none;
@@ -63,23 +63,6 @@ const reset = css`
       outline: 0;
     }
   }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    a {
-      color: inherit;
-      &:hover,
-      &:focus {
-        color: inherit;
-        text-decoration: none;
-      }
-    }
-  }
-
   blockquote {
     border-left: 5px solid ${theme.colors.link_color};
     padding-left: 1rem !important;
@@ -97,9 +80,16 @@ const reset = css`
     margin-top: 0;
     margin-bottom: 1rem;
     overflow: auto;
+    white-space: pre;
+  }
+  pre,
+  code {
+    font-family: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+      'Courier New', monospace;
   }
   figure {
     margin: 0 0 1rem 0;
+  }
   img {
     vertical-align: middle;
   }

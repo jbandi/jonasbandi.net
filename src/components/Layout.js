@@ -1,17 +1,19 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import Helmet from 'react-helmet'
-import { graphql } from 'gatsby'
-import { MDXProvider } from '@mdx-js/tag'
-import { Global, css } from '@emotion/core'
-import { ThemeProvider } from 'emotion-theming'
-import { bpMaxSM } from '../lib/breakpoints'
+import {graphql, StaticQuery} from 'gatsby'
+import {MDXProvider} from '@mdx-js/react'
+import {Global, css} from '@emotion/core'
+import styled from '@emotion/styled'
+import {ThemeProvider} from 'emotion-theming'
+import NotificationMessage from 'components/notification-message'
+import Header from 'components/header'
+import Footer from 'components/footer'
+import mdxComponents from 'components/mdx'
+import {bpMaxMD, bpMaxSM} from '../lib/breakpoints'
 import theme from '../../config/theme'
-import mdxComponents from './mdx'
-import Header from './Header'
 import reset from '../lib/reset'
-import { fonts } from '../lib/typography'
+import {fonts} from '../lib/typography'
 import config from '../../config/website'
-import Footer from '../components/Footer'
 
 export const globalStyles = css`
   .button-secondary {
@@ -20,11 +22,6 @@ export const globalStyles = css`
     background: ${theme.colors.primary_light};
   }
   ${bpMaxSM} {
-    p,
-    em,
-    strong {
-      font-size: 90%;
-    }
     h1 {
       font-size: 30px;
     }
@@ -41,18 +38,20 @@ export const globalStyles = css`
   em {
     font-family: ${fonts.regularItalic};
   }
-  strong {
+  strong,
+  b {
+    font-family: ${fonts.semibold};
     em {
       font-family: ${fonts.semiboldItalic};
     }
   }
-  input {
+  input,
+  textarea {
     border-radius: 4px;
     border: 1px solid ${theme.colors.gray};
     padding: 5px 10px;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
     font-family: ${fonts.regular};
-    margin-top: 5px;
     ::placeholder {
       opacity: 0.4;
     }
@@ -63,17 +62,32 @@ export const globalStyles = css`
   }
   button {
     border-radius: 4px;
-    background-color: ${theme.brand.primary};
+    background-color: ${theme.colors.green};
     border: none;
     color: ${theme.colors.white};
-    padding: 5px 10px;
+    padding: 8px 15px;
     cursor: pointer;
-    border: 1px solid ${theme.brand.primary};
+    border: 1px solid ${theme.colors.green};
     transition: ${theme.transition.ease};
-    :hover {
+    :hover:not(:disabled) {
       background: ${theme.colors.link_color_hover};
       border: 1px solid ${theme.colors.link_color_hover};
       transition: ${theme.transition.ease};
+    }
+    :disabled {
+      opacity: 0.6;
+      cursor: auto;
+    }
+  }
+  code {
+    padding: 2px 4px;
+    background: #f4f3fa;
+    color: ${theme.colors.body_color};
+    border-radius: 3px;
+  }
+  a {
+    code {
+      color: ${theme.brand.primary};
     }
   }
   pre {
@@ -82,7 +96,6 @@ export const globalStyles = css`
     font-size: 16px;
     padding: 10px;
     overflow-x: auto;
-    white-space: nowrap;
     /* Track */
     ::-webkit-scrollbar {
       width: 100%;
@@ -109,81 +122,134 @@ export const globalStyles = css`
   ${reset};
 `
 
-export default ({
-  site,
+const DefaultHero = styled.section`
+  * {
+    color: ${theme.colors.white};
+  }
+  width: 100%;
+  ${({headerColor}) =>
+    headerColor
+      ? css`
+          background: #3155dc;
+          background-image: linear-gradient(-213deg, #5e31dc 0%, #3155dc 100%);
+          background-position: center right, center left;
+          background-repeat: no-repeat;
+          background-size: contain;
+        `
+      : null} position: relative;
+  z-index: 0;
+  align-items: center;
+  display: flex;
+  height: 100px;
+  ${bpMaxMD} {
+    background-size: cover;
+  }
+  ${bpMaxSM} {
+    padding-top: 60px;
+  }
+`
+
+function Layout({
+  data,
+  headerLink,
   frontmatter = {},
+  hero = <DefaultHero />,
+  subscribeForm,
   children,
   dark,
   headerBg,
   headerColor,
   noFooter,
-  noSubscribeForm,
-}) => {
+  backgroundColor,
+  backgroundImage,
+  fixedHeader,
+  logo,
+}) {
   const {
-    description: siteDescription,
-    keywords: siteKeywords,
-  } = site.siteMetadata
+    site: {
+      siteMetadata,
+      siteMetadata: {description: siteDescription, keywords: siteKeywords},
+    },
+  } = data
 
   const {
-    keywords: frontmatterKeywords,
-    description: frontmatterDescription,
+    keywords = siteKeywords,
+    description = siteDescription,
+    title = config.siteTitle,
   } = frontmatter
-
-  const keywords = (frontmatterKeywords || siteKeywords).join(', ')
-  const description = frontmatterDescription || siteDescription
 
   return (
     <ThemeProvider theme={theme}>
-      <Fragment>
-        <Global styles={globalStyles} />
-        <div
-          css={css`
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            min-height: 100vh;
-          `}
-        >
-          <Helmet
-            title={config.siteTitle}
-            meta={[
-              { name: 'description', content: description },
-              { name: 'keywords', content: keywords },
-            ]}
-          >
-            <html lang="en" />
-            <noscript>This site runs best with JavaScript enabled.</noscript>
-          </Helmet>
+      <NotificationMessage queryStringKey="subscribed">{`Thanks for subscribing!`}</NotificationMessage>
+      <NotificationMessage queryStringKey="remain-subscribed">{`Glad you're still here!`}</NotificationMessage>
+      <Global styles={globalStyles} />
+      <Helmet
+        title={title}
+        meta={[
+          {name: 'description', content: description},
+          {name: 'keywords', content: keywords.join()},
+        ]}
+      >
+        <html lang="en" />
+        <script src="https://js.tito.io/v1" async />
+        <noscript>This site runs best with JavaScript enabled.</noscript>
+      </Helmet>
+      <div
+        css={css`
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+          min-height: 100vh;
+          ${backgroundColor && `background: ${backgroundColor}`};
+          ${backgroundImage && `background-image: url(${backgroundImage})`};
+        `}
+      >
+        <div css={{flex: '1 0 auto'}}>
+          {React.cloneElement(hero, {headerColor})}
           <Header
-            siteTitle={site.siteMetadata.title}
+            siteTitle={siteMetadata.title}
+            headerLink={headerLink}
             dark={dark}
             bgColor={headerBg}
             headerColor={headerColor}
+            fixed={fixedHeader}
+            headerImage={logo}
           />
           <MDXProvider components={mdxComponents}>
-            <Fragment>{children}</Fragment>
+            <>{children}</>
           </MDXProvider>
-          {!noFooter && (
+        </div>
+        <div css={{flexShrink: '0'}}>
+          {noFooter ? null : (
             <Footer
-              author={site.siteMetadata.author.name}
-              noSubscribeForm={noSubscribeForm}
+              author={siteMetadata.author.name}
+              subscribeForm={subscribeForm}
             />
           )}
         </div>
-      </Fragment>
+      </div>
     </ThemeProvider>
   )
 }
 
-export const pageQuery = graphql`
-  fragment site on Site {
-    siteMetadata {
-      title
-      description
-      author {
-        name
-      }
-      keywords
-    }
-  }
-`
+export default function LayoutWithSiteData(props) {
+  return (
+    <StaticQuery
+      query={graphql`
+        {
+          site {
+            siteMetadata {
+              title
+              description
+              author {
+                name
+              }
+              keywords
+            }
+          }
+        }
+      `}
+      render={data => <Layout data={data} {...props} />}
+    />
+  )
+}

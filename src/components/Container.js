@@ -1,6 +1,6 @@
 import React from 'react'
-import { css } from '@emotion/core'
-import { bpMaxSM } from 'lib/breakpoints'
+import {css} from '@emotion/core'
+import {bpMaxSM} from 'lib/breakpoints'
 
 const Container = props => {
   const {
@@ -20,7 +20,7 @@ const Container = props => {
         ${bpMaxSM} {
           padding: ${noVerticalPadding ? 0 : '20'}px
             ${noHorizontalPadding ? 0 : '20'}px;
-        };
+        }
       `}
       {...restProps}
     >

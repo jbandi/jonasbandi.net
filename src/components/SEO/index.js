@@ -1,12 +1,13 @@
 import path from 'path'
 import React from 'react'
 import Helmet from 'react-helmet'
-import { StaticQuery, graphql } from 'gatsby'
+import {StaticQuery, graphql} from 'gatsby'
 import PropTypes from 'prop-types'
-import SchemaOrg from './SchemaOrg'
+import SchemaOrg from './schema-org'
 import config from '../../../config/website'
+import defaultMetaImage from '../../../static/images/metaImage.jpg'
 
-const SEO = ({ postData, frontmatter = {}, metaImage, isBlogPost }) => (
+const SEO = ({postData, frontmatter = {}, metaImage, isBlogPost}) => (
   <StaticQuery
     query={graphql`
       {
@@ -32,19 +33,22 @@ const SEO = ({ postData, frontmatter = {}, metaImage, isBlogPost }) => (
         }
       }
     `}
-    render={({ site: { siteMetadata: seo } }) => {
+    render={({site: {siteMetadata: seo}}) => {
       const postMeta =
         frontmatter || postData.childMarkdownRemark.frontmatter || {}
       const title = isBlogPost ? postMeta.title : config.siteTitle
-      const description = postMeta.description || seo.description
-      const image = metaImage ? `${seo.canonicalUrl}${metaImage}` : seo.image
+      const description =
+        postMeta.plainTextDescription || postMeta.description || seo.description
+      const image = metaImage
+        ? `${seo.canonicalUrl}${metaImage}`
+        : `${defaultMetaImage}`
       const url = postMeta.slug
         ? `${seo.canonicalUrl}${path.sep}${postMeta.slug}`
         : seo.canonicalUrl
       const datePublished = isBlogPost ? postMeta.datePublished : false
 
       return (
-        <React.Fragment>
+        <>
           <Helmet>
             {/* General tags */}
             <title>{title}</title>
@@ -65,6 +69,18 @@ const SEO = ({ postData, frontmatter = {}, metaImage, isBlogPost }) => (
             <meta name="twitter:title" content={title} />
             <meta name="twitter:description" content={description} />
             <meta name="twitter:image" content={image} />
+
+            <script defer type="text/javascript">
+              {`(function(p, a, n, d, o, b) {
+                  o = n.createElement('script'); o.type = 'text/javascript'; o.async = true; o.src = 'https://tag.rightmessage.com/'+p+'.js';
+                  b = n.getElementsByTagName('script')[0]; b.parentNode.insertBefore(o, b);
+                  d = function(h, u, i) { var o = n.createElement('style'); o.id = 'rmcloak'+i; o.type = 'text/css';
+                      o.appendChild(n.createTextNode('.rmcloak'+h+'{visibility:hidden}.rmcloak'+u+'{display:none}'));
+                      b.parentNode.insertBefore(o, b); return o; }; o = d('', '-hidden', ''); d('-stay-invisible', '-stay-hidden', '-stay');
+                  setTimeout(function() { o.parentNode && o.parentNode.removeChild(o); }, a);
+              })('943055074', 2500, document);
+            `}
+            </script>
           </Helmet>
           <SchemaOrg
             isBlogPost={isBlogPost}
@@ -78,7 +94,7 @@ const SEO = ({ postData, frontmatter = {}, metaImage, isBlogPost }) => (
             organization={seo.organization}
             defaultTitle={seo.title}
           />
-        </React.Fragment>
+        </>
       )
     }}
   />
@@ -97,7 +113,7 @@ SEO.propTypes = {
 
 SEO.defaultProps = {
   isBlogPost: false,
-  postData: { childMarkdownRemark: {} },
+  postData: {childMarkdownRemark: {}},
   metaImage: null,
 }
 

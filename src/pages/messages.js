@@ -1,33 +1,33 @@
 import React from 'react'
-import { graphql } from 'gatsby'
-import Layout from '../components/Layout'
-import Message from '../components/ConfirmMessage/Message'
+import {graphql} from 'gatsby'
+import Layout from 'components/layout'
+import Message from 'components/confirm-message/message'
 import {
   PleaseConfirmIllustration,
   ThankYouIllustration,
   UnsubscribeIllustration,
-} from '../components/ConfirmMessage/Illustrations'
+} from 'components/confirm-message/illustrations'
 
-export default ({ data: { site, allMdx, latestArticle } }) => {
+export default function Messages({data: {latestArticle}}) {
   return (
-    <Layout site={site} noSubscribeForm>
+    <Layout subscribeForm={null}>
       <div>
         <Message
           fullscreen
           illustration={PleaseConfirmIllustration}
-          title={`Great, one last thing...`}
-          body={`We just sent you an email with the confirmation link. 
-          **Please check your inbox!**`}
+          title="Great, one last thing..."
+          body="We just sent you an email with the confirmation link. 
+          **Please check your inbox!**"
         />
       </div>
       <div>
-        {latestArticle.edges.map(({ node: post }) => (
+        {latestArticle.edges.map(({node: post}) => (
           <Message
             fullscreen
             key={post.id}
             illustration={ThankYouIllustration}
-            title={`Success! Thank you!`}
-            body={`In case you haven’t seen already, here’s my latest article:`}
+            title="Success! Thank you!"
+            body="In case you haven't seen already, here's my latest article:"
             articleTitle={post.frontmatter.title}
             articleSlug={post.frontmatter.slug}
           />
@@ -37,9 +37,9 @@ export default ({ data: { site, allMdx, latestArticle } }) => {
         <Message
           fullscreen
           illustration={UnsubscribeIllustration}
-          title={`You have been unsubscribed.`}
-          body={`As per your request, you have been unsubscribed from all our mailings.`}
-          note={`Changed your mind? [Click here to resubscribe](#)`}
+          title="You have been unsubscribed."
+          body="As per your request, you have been unsubscribed from all our mailings."
+          note="Changed your mind? [Click here to resubscribe](#)"
         />
       </div>
     </Layout>
@@ -48,16 +48,13 @@ export default ({ data: { site, allMdx, latestArticle } }) => {
 
 export const latestArticle = graphql`
   query {
-    site {
-      ...site
-      siteMetadata {
-        title
-      }
-    }
     latestArticle: allMdx(
       limit: 1
-      sort: { fields: [frontmatter___date], order: DESC }
-      filter: { frontmatter: { published: { ne: false } } }
+      sort: {fields: [frontmatter___date], order: DESC}
+      filter: {
+        frontmatter: {published: {ne: false}}
+        fileAbsolutePath: {regex: "//content/blog//"}
+      }
     ) {
       totalCount
       edges {
