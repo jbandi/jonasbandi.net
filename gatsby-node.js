@@ -1,5 +1,5 @@
 const path = require('path')
-const slugify = require('@sindresorhus/slugify')
+// const slugify = require('@sindresorhus/slugify')
 const {createFilePath} = require('gatsby-source-filesystem')
 const remark = require('remark')
 const stripMarkdownPlugin = require('strip-markdown')
@@ -7,35 +7,35 @@ const _ = require('lodash')
 
 const PAGINATION_OFFSET = 7
 
-const createWorkshops = (createPage, edges) => {
-  edges.forEach(({node}, i) => {
-    const prev = i === 0 ? null : edges[i - 1].node
-    const next = i === edges.length - 1 ? null : edges[i + 1].node
-    const pagePath = node.fields.slug
+// const createWorkshops = (createPage, edges) => {
+//   edges.forEach(({node}, i) => {
+//     const prev = i === 0 ? null : edges[i - 1].node
+//     const next = i === edges.length - 1 ? null : edges[i + 1].node
+//     const pagePath = node.fields.slug
+//
+//     createPage({
+//       path: pagePath,
+//       component: path.resolve(`./src/templates/workshop-page.js`),
+//       context: {
+//         id: node.id,
+//         prev,
+//         next,
+//       },
+//     })
+//   })
+// }
 
-    createPage({
-      path: pagePath,
-      component: path.resolve(`./src/templates/workshop-page.js`),
-      context: {
-        id: node.id,
-        prev,
-        next,
-      },
-    })
-  })
-}
-
-function createWorkshopPages({data, actions}) {
-  if (_.isEmpty(data.edges)) {
-    throw new Error('There are no workshops!')
-  }
-
-  const {edges} = data
-  const {createPage} = actions
-  createWorkshops(createPage, edges)
-
-  return null
-}
+// function createWorkshopPages({data, actions}) {
+//   if (_.isEmpty(data.edges)) {
+//     throw new Error('There are no workshops!')
+//   }
+//
+//   const {edges} = data
+//   const {createPage} = actions
+//   createWorkshops(createPage, edges)
+//
+//   return null
+// }
 
 function stripMarkdown(markdownString) {
   return remark()
@@ -44,7 +44,13 @@ function stripMarkdown(markdownString) {
     .toString()
 }
 
-const createPosts = (createPage, createRedirect, edges) => {
+const createPosts = (
+  createPage,
+  createRedirect,
+  edges,
+  blogPath,
+  defaultBannerImagePath,
+) => {
   edges.forEach(({node}, i) => {
     const prev = i === 0 ? null : edges[i - 1].node
     const next = i === edges.length - 1 ? null : edges[i + 1].node
@@ -69,19 +75,33 @@ const createPosts = (createPage, createRedirect, edges) => {
         id: node.id,
         prev,
         next,
+        blogPath,
+        defaultBannerImagePath,
       },
     })
   })
 }
 
-function createBlogPages({blogPath, data, paginationTemplate, actions}) {
+function createBlogPages({
+  blogPath,
+  defaultBannerImagePath,
+  data,
+  paginationTemplate,
+  actions,
+}) {
   if (_.isEmpty(data.edges)) {
     throw new Error('There are no posts!')
   }
 
   const {edges} = data
   const {createRedirect, createPage} = actions
-  createPosts(createPage, createRedirect, edges)
+  createPosts(
+    createPage,
+    createRedirect,
+    edges,
+    blogPath,
+    defaultBannerImagePath,
+  )
   createPaginatedPages(
     actions.createPage,
     edges,
@@ -143,32 +163,6 @@ exports.createPages = async ({actions, graphql}) => {
           }
         }
       }
-      writing: allMdx(
-        filter: {
-          frontmatter: {published: {ne: false}}
-          fileAbsolutePath: {regex: "//content/writing-blog//"}
-        }
-        sort: {order: DESC, fields: [frontmatter___date]}
-      ) {
-        edges {
-          node {
-            ...PostDetails
-          }
-        }
-      }
-      workshops: allMdx(
-        filter: {
-          frontmatter: {published: {ne: false}}
-          fileAbsolutePath: {regex: "//content/workshops//"}
-        }
-        sort: {order: DESC, fields: [frontmatter___date]}
-      ) {
-        edges {
-          node {
-            ...PostDetails
-          }
-        }
-      }
     }
   `)
 
@@ -176,28 +170,21 @@ exports.createPages = async ({actions, graphql}) => {
     return Promise.reject(errors)
   }
 
-  const {blog, devlinks, writing, workshops} = data
+  // const {blog, devlinks, writing, workshops} = data
+  const {blog, devlinks} = data
 
   createBlogPages({
     blogPath: '/blog',
+    defaultBannerImagePath: 'images/logo.png',
     data: blog,
     paginationTemplate: path.resolve(`src/templates/blog.js`),
     actions,
   })
   createBlogPages({
     blogPath: '/devlinks',
+    defaultBannerImagePath: 'images/devlinks.png',
     data: devlinks,
     paginationTemplate: path.resolve(`src/templates/devlinks.js`),
-    actions,
-  })
-  createBlogPages({
-    blogPath: '/writing/blog',
-    data: writing,
-    paginationTemplate: path.resolve(`src/templates/writing-blog.js`),
-    actions,
-  })
-  createWorkshopPages({
-    data: workshops,
     actions,
   })
 }
@@ -256,11 +243,11 @@ exports.onCreateNode = ({node, getNode, actions}) => {
   const {createNodeField} = actions
 
   if (node.internal.type === `Mdx`) {
-    const parent = getNode(node.parent)
+    // const parent = getNode(node.parent)
     let slug =
       node.frontmatter.slug ||
       createFilePath({node, getNode, basePath: `pages`})
-    let {isWriting, isWorkshop, isScheduled} = false
+    // const {isWriting, isWorkshop, isScheduled} = false
 
     if (node.fileAbsolutePath.includes('content/blog/')) {
       const date = node.frontmatter.date.split('T')[0]
@@ -273,22 +260,22 @@ exports.onCreateNode = ({node, getNode, actions}) => {
       slug = `/devlinks/${fileName}`
     }
 
-    if (node.fileAbsolutePath.includes('content/workshops/')) {
-      isWriting = false
-      isWorkshop = true
-      isScheduled = false
-      if (node.frontmatter.date) {
-        isWriting = false
-        isScheduled = true
-      }
-      slug = `/workshops/${node.frontmatter.slug ||
-        slugify(node.frontmatter.title)}`
-    }
+    // if (node.fileAbsolutePath.includes('content/workshops/')) {
+    //   isWriting = false
+    //   isWorkshop = true
+    //   isScheduled = false
+    //   if (node.frontmatter.date) {
+    //     isWriting = false
+    //     isScheduled = true
+    //   }
+    //   slug = `/workshops/${node.frontmatter.slug ||
+    //     slugify(node.frontmatter.title)}`
+    // }
 
-    if (node.fileAbsolutePath.includes('content/writing-blog/')) {
-      isWriting = true
-      slug = `/writing/blog/${node.frontmatter.slug || slugify(parent.name)}`
-    }
+    // if (node.fileAbsolutePath.includes('content/writing-blog/')) {
+    //   isWriting = true
+    //   slug = `/writing/blog/${node.frontmatter.slug || slugify(parent.name)}`
+    // }
     createNodeField({
       name: 'id',
       node,
@@ -310,7 +297,7 @@ exports.onCreateNode = ({node, getNode, actions}) => {
     createNodeField({
       name: 'author',
       node,
-      value: node.frontmatter.author || 'Kent C. Dodds',
+      value: node.frontmatter.author || 'Jonas Bandi',
     })
 
     createNodeField({
@@ -342,7 +329,6 @@ exports.onCreateNode = ({node, getNode, actions}) => {
       node,
       value: node.frontmatter.banner,
     })
-
     createNodeField({
       name: 'bannerCredit',
       node,
@@ -370,7 +356,7 @@ exports.onCreateNode = ({node, getNode, actions}) => {
     createNodeField({
       name: 'editLink',
       node,
-      value: `https://github.com/kentcdodds/kentcdodds.com/edit/master${node.fileAbsolutePath.replace(
+      value: `https://github.com/jbandi/jonasbandi.net/edit/master${node.fileAbsolutePath.replace(
         __dirname,
         '',
       )}`,
@@ -379,26 +365,27 @@ exports.onCreateNode = ({node, getNode, actions}) => {
     createNodeField({
       name: 'noFooter',
       node,
-      value: isWriting ? false : node.frontmatter.noFooter || false,
+      // value: isWriting ? false : node.frontmatter.noFooter || false,
+      value: node.frontmatter.noFooter || false,
     })
 
-    createNodeField({
-      name: 'isWriting',
-      node,
-      value: isWriting,
-    })
-
-    createNodeField({
-      name: 'isWorkshop',
-      node,
-      value: isWorkshop,
-    })
-
-    createNodeField({
-      name: 'isScheduled',
-      node,
-      value: isScheduled,
-    })
+    // createNodeField({
+    //   name: 'isWriting',
+    //   node,
+    //   value: isWriting,
+    // })
+    //
+    // createNodeField({
+    //   name: 'isWorkshop',
+    //   node,
+    //   value: isWorkshop,
+    // })
+    //
+    // createNodeField({
+    //   name: 'isScheduled',
+    //   node,
+    //   value: isScheduled,
+    // })
   }
 }
 

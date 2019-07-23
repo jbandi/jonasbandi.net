@@ -7,6 +7,7 @@ import SEO from '../components/SEO'
 import Layout from '../components/Layout'
 import Link from '../components/Link'
 import {bpMaxSM} from '../lib/breakpoints'
+import theme from '../../config/theme'
 // import defaultDevLinksImage from '../images/devlinks.png'
 
 // const {generatePathForDevlink} = require('../pathFactory');
@@ -29,7 +30,7 @@ const Blog = ({
     .filter(post => post !== undefined)
 
   return (
-    <Layout site={site}>
+    <Layout site={site} headerColor={theme.colors.white}>
       <SEO />
       <Container noVerticalPadding>
         {posts.map(({node: post}) => {
@@ -172,7 +173,6 @@ export const pageQuery = graphql`
               }
             }
             slug
-            keywords
           }
         }
       }

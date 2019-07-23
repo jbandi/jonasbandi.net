@@ -5,7 +5,7 @@ import {StaticQuery, graphql} from 'gatsby'
 import PropTypes from 'prop-types'
 import SchemaOrg from './schema-org'
 import config from '../../../config/website'
-import defaultMetaImage from '../../../static/images/metaImage.jpg'
+import defaultMetaImage from '../../../static/images/metaImage.png'
 
 const SEO = ({postData, frontmatter = {}, metaImage, isBlogPost}) => (
   <StaticQuery
@@ -70,17 +70,17 @@ const SEO = ({postData, frontmatter = {}, metaImage, isBlogPost}) => (
             <meta name="twitter:description" content={description} />
             <meta name="twitter:image" content={image} />
 
-            <script defer type="text/javascript">
-              {`(function(p, a, n, d, o, b) {
-                  o = n.createElement('script'); o.type = 'text/javascript'; o.async = true; o.src = 'https://tag.rightmessage.com/'+p+'.js';
-                  b = n.getElementsByTagName('script')[0]; b.parentNode.insertBefore(o, b);
-                  d = function(h, u, i) { var o = n.createElement('style'); o.id = 'rmcloak'+i; o.type = 'text/css';
-                      o.appendChild(n.createTextNode('.rmcloak'+h+'{visibility:hidden}.rmcloak'+u+'{display:none}'));
-                      b.parentNode.insertBefore(o, b); return o; }; o = d('', '-hidden', ''); d('-stay-invisible', '-stay-hidden', '-stay');
-                  setTimeout(function() { o.parentNode && o.parentNode.removeChild(o); }, a);
-              })('943055074', 2500, document);
-            `}
-            </script>
+            {/*<script defer type="text/javascript">*/}
+            {/*  {`(function(p, a, n, d, o, b) {*/}
+            {/*      o = n.createElement('script'); o.type = 'text/javascript'; o.async = true; o.src = 'https://tag.rightmessage.com/'+p+'.js';*/}
+            {/*      b = n.getElementsByTagName('script')[0]; b.parentNode.insertBefore(o, b);*/}
+            {/*      d = function(h, u, i) { var o = n.createElement('style'); o.id = 'rmcloak'+i; o.type = 'text/css';*/}
+            {/*          o.appendChild(n.createTextNode('.rmcloak'+h+'{visibility:hidden}.rmcloak'+u+'{display:none}'));*/}
+            {/*          b.parentNode.insertBefore(o, b); return o; }; o = d('', '-hidden', ''); d('-stay-invisible', '-stay-hidden', '-stay');*/}
+            {/*      setTimeout(function() { o.parentNode && o.parentNode.removeChild(o); }, a);*/}
+            {/*  })('943055074', 2500, document);*/}
+            {/*`}*/}
+            {/*</script>*/}
           </Helmet>
           <SchemaOrg
             isBlogPost={isBlogPost}

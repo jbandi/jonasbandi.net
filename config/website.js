@@ -1,25 +1,21 @@
 module.exports = {
   pathPrefix: '/', // Prefix for all links. If you deploy your site to example.com/blog your pathPrefix should be "blog"
   siteTitle: 'Jonas Bandi', // Navigation and Site Title
-  siteTitleAlt: 'The personal website of Kent C. Dodds', // Alternative Site title for SEO
-  siteTitleShort: 'kentcdodds', // short_name for manifest
-  siteUrl: 'https://kentcdodds.com', // Domain of your site. No trailing slash!
+  siteTitleAlt: 'The personal website of Jonas Bandi', // Alternative Site title for SEO
+  siteTitleShort: 'jonasbandi', // short_name for manifest
+  siteUrl: 'https://jonasbandi.net', // Domain of your site. No trailing slash!
   siteLanguage: 'en', // Language Tag on <html> element
   siteLogo: 'images/logo.png', // Used for SEO and manifest, path to your image you placed in the 'static' folder
-  siteDescription:
-    'Come check out how Kent C. Dodds can help you level up your career as a software engineer.',
+  siteDescription: 'The personal website of Jonas Bandi.',
   minibio: `
-    <strong>Kent C. Dodds</strong> is a JavaScript software engineer and
-    teacher. He's taught hundreds of thousands of people how to make the world
-    a better place with quality software development tools and practices. He
-    lives with his wife and four kids in Utah.
+    <strong>Jonas Bandi</strong> is an enthusiastic software professional, freelance developer, trainer and speaker.
   `,
-  author: 'Kent C. Dodds', // Author for schemaORGJSONLD
-  organization: 'Kent C. Dodds Tech LLC',
+  author: 'Jonas Bandi', // Author for schemaORGJSONLD
+  organization: 'Jonas Bandi',
 
   // siteFBAppID: '123456789', // Facebook App ID - Optional
-  userTwitter: '@kentcdodds', // Twitter Username
-  ogSiteName: 'Kent C. Dodds', // Facebook Site Name
+  userTwitter: '@jbandi', // Twitter Username
+  ogSiteName: 'Jonas Bandi', // Facebook Site Name
   ogLanguage: 'en_US',
   googleAnalyticsID: 'UA-62924965-1',
 

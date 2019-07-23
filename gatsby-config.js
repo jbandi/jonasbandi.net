@@ -27,7 +27,7 @@ module.exports = {
     title: config.siteTitle,
     twitterHandle: config.twitterHandle,
     description: config.siteDescription,
-    keywords: ['Video Blogger'],
+    keywords: ['Software Development'],
     canonicalUrl: config.siteUrl,
     image: config.siteLogo,
     author: {
@@ -59,20 +59,20 @@ module.exports = {
         name: 'devlinks',
       },
     },
-    {
-      resolve: 'gatsby-source-filesystem',
-      options: {
-        path: `${__dirname}/content/writing-blog`,
-        name: 'writing-blog',
-      },
-    },
-    {
-      resolve: 'gatsby-source-filesystem',
-      options: {
-        path: `${__dirname}/content/workshops`,
-        name: 'workshops',
-      },
-    },
+    // {
+    //   resolve: 'gatsby-source-filesystem',
+    //   options: {
+    //     path: `${__dirname}/content/writing-blog`,
+    //     name: 'writing-blog',
+    //   },
+    // },
+    // {
+    //   resolve: 'gatsby-source-filesystem',
+    //   options: {
+    //     path: `${__dirname}/content/workshops`,
+    //     name: 'workshops',
+    //   },
+    // },
     {
       resolve: 'gatsby-source-filesystem',
       options: {
@@ -118,15 +118,17 @@ module.exports = {
         display: 'standalone',
         icons: [
           {
-            src: '/favicons/android-chrome-192x192.png',
+            // src: '/favicons/android-chrome-192x192.png',
+            src: '/favicon.png',
             sizes: '192x192',
             type: 'image/png',
           },
-          {
-            src: '/favicons/android-chrome-512x512.png',
-            sizes: '512x512',
-            type: 'image/png',
-          },
+          // {
+          //   // src: '/favicons/android-chrome-512x512.png',
+          //   src: '/favicon.png',
+          //   sizes: '512x512',
+          //   type: 'image/png',
+          // },
         ],
       },
     },
@@ -136,15 +138,15 @@ module.exports = {
         feeds: [
           getBlogFeed({
             filePathRegex: `//content/blog//`,
-            blogUrl: 'https://kentcdodds.com/blog',
+            blogUrl: 'https://jonasbandi.net/blog',
             output: '/blog/rss.xml',
-            title: 'Kent C. Dodds Blog RSS Feed',
+            title: 'Jonas Bandi Blog RSS Feed',
           }),
           getBlogFeed({
-            filePathRegex: `//content/writing-blog//`,
-            blogUrl: 'https://kentcdodds.com/writing/blog',
-            output: '/writing/blog/rss.xml',
-            title: `Kent's Writing Blog RSS Feed`,
+            filePathRegex: `//content/devlinks//`,
+            blogUrl: 'https://jonasbandi.net/devlinks',
+            output: '/devlinks/rss.xml',
+            title: `Jonas Bandi DevLinks RSS Feed`,
           }),
         ],
       },
@@ -187,32 +189,15 @@ function getBlogFeed({filePathRegex, blogUrl, ...overrides}) {
             <div style="display: flex;">
               <div style="padding-right: 20px;">
                 <img
-                  src="https://kentcdodds.com/images/small-circular-kent.png"
-                  alt="Kent C. Dodds"
+                  src="https://kentcdodds.com/images/logo.png"
+                  alt="Jonas Bandi"
                   style="max-width: 80px; border-radius: 50%;"
                 />
               </div>
               <p>
-                <strong>Kent C. Dodds</strong> is a JavaScript software engineer and
-                teacher. He's taught hundreds of thousands of people how to make the world
-                a better place with quality software development tools and practices. He
-                lives with his wife and four kids in Utah.
+                <strong>Jonas Bandi</strong>  is an enthusiastic software professional.
+                He is passionate about technology and methodologies - always trying to learn, improve and share knowledge.
               </p>
-            </div>
-            <div>
-              <p>Learn more with Kent C. Dodds:</p>
-              <ul>
-                <li>
-                  <a href="https://kentcdodds.com/workshops">Live, professional workshops</a>:
-                  Join Kent C. Dodds from the comfort of your home for live remote workshops.
-                  Tickets are limited! 🎟
-                </li>
-                <li>
-                  <a href="https://testingjavascript.com">TestingJavaScript.com</a>: Jump on
-                  this self-paced workshop and learn the smart, efficient way to test any
-                  JavaScript application. 🏆
-                </li>
-              </ul>
             </div>
           </div>
         `

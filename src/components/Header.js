@@ -4,11 +4,11 @@ import {css} from '@emotion/core'
 import styled from '@emotion/styled'
 import theme from '../../config/theme'
 import {fonts} from '../lib/typography'
-import jonas from '../images/jonas.jpg'
 import MobileNav from './mobile-nav'
 import Container from './container'
 import {bpMaxSM} from '../lib/breakpoints'
 import {lighten} from 'polished'
+import logo from '../images/logo.png'
 
 function HeaderLink({headerColor, ...props}) {
   return (
@@ -20,7 +20,7 @@ function HeaderLink({headerColor, ...props}) {
         '&:hover,&:focus': {
           background:
             headerColor === theme.colors.white
-              ? 'rgba(40, 28, 77, 0.3)'
+              ? 'rgba(255,118,34,0.3)'
               : lighten(0.4, theme.brand.primary),
           color:
             headerColor === theme.colors.white
@@ -46,6 +46,20 @@ const NavLink = styled(HeaderLink)({
   },
 })
 
+const defaultHeaderImage = (
+  <img
+    src={logo}
+    alt="Jonas Bandi"
+    css={css`
+      position: absolute;
+      //border-radius: 100%;
+      margin-bottom: 0;
+      max-width: 60px;
+      filter: invert(100%);
+    `}
+  />
+)
+
 const Header = ({
   dark,
   bgColor = 'none',
@@ -53,7 +67,7 @@ const Header = ({
   headerLink = '/',
   headerColor = 'black',
   fixed = false,
-  headerImage = true,
+  headerImage = defaultHeaderImage,
 }) => (
   <header
     css={css`
@@ -88,23 +102,23 @@ const Header = ({
             fontFamily: fonts.regular,
             display: 'flex',
             alignItems: 'center',
-            img: {
-              marginBottom: 0,
-              maxWidth: '50px',
-              position: 'absolute',
-              borderRadius: '100%',
-              background:
-                headerColor === '#fff' ? 'rgba(40, 28, 77, 0.7)' : '#f1f1f1',
-            },
+            // img: {
+            //   marginBottom: 0,
+            //   maxWidth: '60px',
+            //   position: 'absolute',
+            // borderRadius: '100%',
+            // background: headerColor === '#fff' ? 'rgba(40, 28, 77, 0.7)' : '#f1f1f1',
+            // },
             ':hover, :focus': {
               background: 'transparent',
             },
             span: {
-              transform: headerImage && 'translateX(60px)',
+              transform: headerImage && 'translateX(80px)',
             },
           }}
         >
-          {headerImage && <img src={jonas} alt="Kent C. Dodds" />}{' '}
+          {headerImage}
+          {/*{headerImage && <img src={headerImage} alt="Jonas Bandi" />}{' '}*/}
           <span>{siteTitle}</span>
         </HeaderLink>
         <div

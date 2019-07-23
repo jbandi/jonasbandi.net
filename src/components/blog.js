@@ -8,7 +8,7 @@ import Link from 'components/link'
 import {bpMaxSM} from '../lib/breakpoints'
 import theme from '../../config/theme'
 
-function Blog({data: {allMdx}, pageContext: {pagination}, subscribeForm}) {
+function Blog({data: {allMdx}, pageContext: {pagination}}) {
   const {page, nextPagePath, previousPagePath} = pagination
 
   const posts = page
@@ -22,7 +22,7 @@ function Blog({data: {allMdx}, pageContext: {pagination}, subscribeForm}) {
     .filter(post => post !== undefined)
 
   return (
-    <Layout headerColor={theme.colors.white} subscribeForm={subscribeForm}>
+    <Layout headerColor={theme.colors.white}>
       <SEO />
       <Container
         noVerticalPadding

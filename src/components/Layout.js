@@ -5,7 +5,6 @@ import {MDXProvider} from '@mdx-js/react'
 import {Global, css} from '@emotion/core'
 import styled from '@emotion/styled'
 import {ThemeProvider} from 'emotion-theming'
-import NotificationMessage from 'components/notification-message'
 import Header from 'components/header'
 import Footer from 'components/footer'
 import mdxComponents from 'components/mdx'
@@ -91,7 +90,7 @@ export const globalStyles = css`
     }
   }
   pre {
-    background-color: #061526 !important;
+    //background-color: #061526 !important;
     border-radius: 4px;
     font-size: 16px;
     padding: 10px;
@@ -131,7 +130,7 @@ const DefaultHero = styled.section`
     headerColor
       ? css`
           background: #3155dc;
-          background-image: linear-gradient(-213deg, #5e31dc 0%, #3155dc 100%);
+          background-image: linear-gradient(-213deg, #331c71 0%, #23368a 100%);
           background-position: center right, center left;
           background-repeat: no-repeat;
           background-size: contain;
@@ -154,7 +153,7 @@ function Layout({
   headerLink,
   frontmatter = {},
   hero = <DefaultHero />,
-  subscribeForm,
+  // subscribeForm,
   children,
   dark,
   headerBg,
@@ -163,7 +162,7 @@ function Layout({
   backgroundColor,
   backgroundImage,
   fixedHeader,
-  logo,
+  headerImage,
 }) {
   const {
     site: {
@@ -180,8 +179,6 @@ function Layout({
 
   return (
     <ThemeProvider theme={theme}>
-      <NotificationMessage queryStringKey="subscribed">{`Thanks for subscribing!`}</NotificationMessage>
-      <NotificationMessage queryStringKey="remain-subscribed">{`Glad you're still here!`}</NotificationMessage>
       <Global styles={globalStyles} />
       <Helmet
         title={title}
@@ -191,7 +188,6 @@ function Layout({
         ]}
       >
         <html lang="en" />
-        <script src="https://js.tito.io/v1" async />
         <noscript>This site runs best with JavaScript enabled.</noscript>
       </Helmet>
       <div
@@ -213,19 +209,14 @@ function Layout({
             bgColor={headerBg}
             headerColor={headerColor}
             fixed={fixedHeader}
-            headerImage={logo}
+            headerImage={headerImage}
           />
           <MDXProvider components={mdxComponents}>
             <>{children}</>
           </MDXProvider>
         </div>
         <div css={{flexShrink: '0'}}>
-          {noFooter ? null : (
-            <Footer
-              author={siteMetadata.author.name}
-              subscribeForm={subscribeForm}
-            />
-          )}
+          {noFooter ? null : <Footer author={siteMetadata.author.name} />}
         </div>
       </div>
     </ThemeProvider>

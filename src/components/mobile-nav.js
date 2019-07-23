@@ -75,7 +75,7 @@ const Toggle = ({color = 'white'}) => {
             height: 100vh;
             display: flex;
             align-items: center;
-            background: ${theme.brand.primary};
+            background: ${theme.colors.purple_dark};
           `}
         >
           <Container
@@ -107,18 +107,14 @@ const Toggle = ({color = 'white'}) => {
               Blog
             </Link>
             <Link
-              aria-label="View talks page"
-              to="/talks"
+              aria-label="View devlinks page"
+              to="/devlinks"
               activeClassName="active"
             >
-              Talks
+              DevLinks
             </Link>
-            <Link
-              aria-label="View workshops page"
-              to="/workshops"
-              activeClassName="active"
-            >
-              Workshops
+            <Link aria-label="View home page" to="/" activeClassName="active">
+              Homepage
             </Link>
             <Link
               aria-label="View about page"

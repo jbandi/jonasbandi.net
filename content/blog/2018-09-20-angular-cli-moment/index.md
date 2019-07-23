@@ -2,7 +2,7 @@
 slug: angular-cli-moment
 date: 2018-09-20
 title: 'Angular CLI and Moment.js: A recipe for disaster … and how to fix it.'
-description: 'Beware: Angular CLI 6 makes impossible to use Moment.js!'
+description: 'Beware: Angular CLI 6 makes it impossible to use Moment.js!'
 published: true
 author: 'Jonas Bandi'
 banner: './banner.png'
@@ -48,9 +48,9 @@ npm i moment @types/moment
 
 Now use _Moment.js_ in your project, i.e. in `main.ts` :
 
-```
+```javascript
 import * as moment from 'moment'
-console.log(moment());
+console.log(moment())
 ```
 
 Now run the build and have look at the bundle:

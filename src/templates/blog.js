@@ -24,7 +24,6 @@ export default function CodingBlogWithData(props) {
                 id
                 fields {
                   title
-                  isWriting
                   slug
                   date
                 }
@@ -40,7 +39,6 @@ export default function CodingBlogWithData(props) {
                     ...bannerImage640
                   }
                   slug
-                  keywords
                 }
               }
             }
