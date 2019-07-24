@@ -109,25 +109,9 @@
     "build": "gatsby build",
     "dev": "npm-run-all --parallel dev:*",
     "dev:gatsby": "gatsby develop",
-    "dev:functions": "dotenv -e ./netlify/.env netlify-lambda serve netlify/functions",
     "start": "gatsby serve --port 5020",
-    "setup": "yarn && yarn validate",
-    "netlify": "npm-run-all --parallel functions:build lint test netlify:cypress",
-    "functions:build": "netlify-lambda build netlify/functions",
-    "netlify:cypress": "npm-run-all --parallel install:cypress build && yarn test:e2e",
-    "install:cypress": "cypress install",
-    "build-and-test": "yarn build && yarn test:e2e",
-    "validate": "npm-run-all --parallel lint test build-and-test",
     "lint": "eslint .",
-    "format": "prettier --write \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|graphql|mdx)\"",
-    "cy": "is-ci \"test:e2e\" \"cy:open\"",
-    "cy:open": "cypress open",
-    "cy:run": "CYPRESS_BASE_URL=http://localhost:5020 cypress run",
-    "test:e2e": "start-server-and-test start http://localhost:5020 cy:run",
-    "test": "is-ci \"test:coverage\" \"test:watch\"",
-    "test:coverage": "jest --coverage",
-    "test:watch": "jest --watch",
-    "test:debug": "node --inspect-brk ./node_modules/jest/bin/jest.js --runInBand --watch"
+    "format": "prettier --write \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|graphql|mdx)\""
   },
   "husky": {
     "hooks": {
