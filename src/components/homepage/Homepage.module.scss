@@ -1,0 +1,120 @@
+.body {
+  background-color: #111;
+  background-image: url('./assets/bg.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center center;
+  background-size: cover;
+  line-height: 1;
+  font-size: 62.5%;
+}
+
+.title {
+  color: #463229;
+  font-family: 'Yanone Kaffeesatz', 'Arial Narrow', Sans-Serif;
+  font-weight: 200;
+  padding: 0 5%;
+  font-size: 700%;
+  letter-spacing: 10px;
+  text-transform: uppercase;
+  margin: 5% 0 10px 0;
+  word-wrap: break-word;
+}
+
+.subtitle {
+  color: #463229;
+  //font-family: "Yanone Kaffeesatz", "Arial Narrow", Sans-Serif;
+  font-weight: 200;
+  padding: 0 5%;
+  margin: 0;
+  font-size: 260%;
+  letter-spacing: 1px;
+  font-family: ratio-1, ratio-2, 'proxima-nova-1', 'proxima-nova-2', Tahoma,
+    Helvetica, Verdana, sans-serif;
+}
+
+.tagline {
+  position: relative;
+  width: 40%;
+  max-width: 600px;
+
+  /*font-family: Georgia, Cambria, "Times New Roman", Serif;*/
+  /*	font-family: "Yanone Kaffeesatz", "Arial Narrow", Sans-Serif;*/
+  font-family: ratio-1, ratio-2, 'proxima-nova-1', 'proxima-nova-2', Tahoma,
+    Helvetica, Verdana, sans-serif;
+  font-size: 200%;
+  font-weight: 200;
+  line-height: 1.5em;
+  /*	text-shadow: 1px 1px 0 #333;*/
+
+  z-index: 1;
+}
+
+.motto {
+  margin: 10px 5% 0 5%;
+  color: #463229;
+  @media only screen and (min-width: 320px) and (max-width: 640px) {
+    display: none;
+  }
+}
+
+.biografie {
+  margin: 40px 5% 0 5%;
+  color: #fcffdd;
+
+  p {
+    margin: 10px 0;
+  }
+
+  a {
+    color: #fdffe7;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    -webkit-transition: color 0.2s ease;
+    -moz-transition: color 0.2s ease;
+    -o-transition: color 0.2s ease;
+
+    &:hover {
+      color: #fff;
+    }
+  }
+}
+
+.links {
+  margin: 40px 50% 5% 5%;
+  img {
+    width: 45px;
+    height: auto;
+    margin-top: 8px;
+  }
+  a {
+    margin: 0 8px 0 0;
+  }
+  a:hover {
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+    -webkit-transition: opacity 0.3s ease;
+    -moz-transition: opacity 0.3s ease;
+    -ms-transition: opacity 0.3s ease;
+    -o-transition: opacity 0.3s ease;
+  }
+}
+
+.signature {
+  width: 95%;
+  position: fixed;
+  bottom: 3%;
+  right: 5%;
+  text-align: right;
+  z-index: -10;
+
+  img {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+  }
+
+  @media only screen and (min-width: 320px) and (max-width: 640px) {
+    display: none;
+  }
+}
