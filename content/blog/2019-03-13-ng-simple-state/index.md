@@ -92,7 +92,7 @@ management. It is a form of
   model state changes and reactions explicitly via observables and
   subscriptions. No need for RxJS at all!
 
-> The key takeaway: Default Angular change detection enables real simple state
+> The key takeaway: Default Angular change detection enables really simple state
 > management!
 
 I wonder why this is not documented more prominently …
