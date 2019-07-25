@@ -62,7 +62,7 @@ npx webpack-bundle-analyzer dist/my-project/stats.json
 
 You get the following scary picture:
 
-![moment_locales](moment_with_locales.png)
+![moment_locales](./moment_with_locales.png)
 
 The main bundle of your application has a size of 498 KB of which Moment.js is
 329 KB! The biggest part of Moment.js consists of a bunch of locales, which you
