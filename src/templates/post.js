@@ -17,7 +17,7 @@ import Markdown from 'react-markdown'
 import {fonts} from '../lib/typography'
 import config from '../../config/website'
 import {bpMaxSM} from '../lib/breakpoints'
-import get from 'lodash/get'
+// import get from 'lodash/get'
 import logo from '../images/logo.png'
 // import intersection from 'lodash/intersection'
 // import flatMap from 'lodash/flatMap'
@@ -75,10 +75,9 @@ function Post({data: {site, mdx, dfBanner}, pageContext: {blogPath}}) {
     />
   )
 
-  // let blogPostBannerImagePath;
-  let blogPostBannerImage
+  let blogPostBannerImagePath, blogPostBannerImage
   if (banner) {
-    // blogPostBannerImagePath = banner.childImageSharp.fluid.src;
+    blogPostBannerImagePath = banner.childImageSharp.fluid.src
     blogPostBannerImage = (
       <div
         css={css`
@@ -100,7 +99,7 @@ function Post({data: {site, mdx, dfBanner}, pageContext: {blogPath}}) {
       </div>
     )
   } else {
-    // blogPostBannerImagePath =   `/${defaultBanner}`;
+    blogPostBannerImagePath = dfBanner.childImageSharp.fluid.src
     blogPostBannerImage = (
       <div
         css={css`
@@ -141,7 +140,7 @@ function Post({data: {site, mdx, dfBanner}, pageContext: {blogPath}}) {
     >
       <SEO
         frontmatter={mdx.fields}
-        metaImage={get(mdx, 'fields.banner.childImageSharp.fluid.src')}
+        metaImage={blogPostBannerImagePath}
         isBlogPost
       />
       <article
