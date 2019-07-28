@@ -189,7 +189,7 @@ function getBlogFeed({filePathRegex, blogUrl, ...overrides}) {
             <div style="display: flex;">
               <div style="padding-right: 20px;">
                 <img
-                  src="https://kentcdodds.com/images/logo.png"
+                  src="${siteUrl}/jonas_avatar.png"
                   alt="Jonas Bandi"
                   style="max-width: 80px; border-radius: 50%;"
                 />

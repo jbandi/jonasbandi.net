@@ -1,3 +1,4 @@
-# Jonas Bandi personal website
+# My personal website based on Gatsby
 
-The initial sources come from (https://github.com/kentcdodds/kentcdodds.com).
+I took the initial sources from
+[https://github.com/kentcdodds/kentcdodds.com](https://github.com/kentcdodds/kentcdodds.com).
