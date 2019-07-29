@@ -39,10 +39,13 @@ scripts: {
 Change the DOM node on which the second React app is bootstrapped:
 
 ```html
-//index.html
+<!-- index.html -->
 <div id="app2-root"></div>
+```
 
-// index.js ReactDOM.render(<App />, document.getElementById('app2-root'));
+```js
+// index.js
+ReactDOM.render(<App />, document.getElementById('app2-root'))
 ```
 
 Run the first React application:
