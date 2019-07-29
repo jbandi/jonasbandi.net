@@ -1,7 +1,8 @@
 import React from 'react'
 import {css} from '@emotion/core'
-// import theme from 'prism-react-renderer/themes/nightOwl'
-import theme from 'prism-react-renderer/themes/github'
+import theme from 'prism-react-renderer/themes/nightOwl'
+// import theme from 'prism-react-renderer/themes/nightOwlLight'
+// import theme from 'prism-react-renderer/themes/github'
 import Highlight, {defaultProps} from 'prism-react-renderer'
 
 const RE = /{([\d,-]+)}/
