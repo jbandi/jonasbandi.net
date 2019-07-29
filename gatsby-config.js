@@ -183,6 +183,7 @@ function getBlogFeed({filePathRegex, blogUrl, ...overrides}) {
       return allMdx.edges.map(edge => {
         const siteUrl = site.siteMetadata.siteUrl
         const url = `${siteUrl}/${stripSlash(edge.node.fields.slug)}`
+        const bannerSrc = edge.node.frontmatter.banner.publicURL
         // TODO: clean this up... This shouldn't be here and it should be dynamic.
         const footer = `
           <div style="width: 100%; margin: 0 auto; max-width: 800px; padding: 40px 40px;">
@@ -220,6 +221,7 @@ function getBlogFeed({filePathRegex, blogUrl, ...overrides}) {
           custom_elements: [
             {
               'content:encoded': `<div style="width: 100%; margin: 0 auto; max-width: 800px; padding: 40px 40px;">
+                <img src=${bannerSrc}/>
                 ${html}
                 ${postText}
               </div>`,
@@ -257,6 +259,9 @@ function getBlogFeed({filePathRegex, blogUrl, ...overrides}) {
              }
              frontmatter {
                title
+               banner {
+                publicURL
+               }
              }
            }
          }
