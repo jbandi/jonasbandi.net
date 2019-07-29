@@ -2,7 +2,7 @@ import React from 'react'
 import {css} from '@emotion/core'
 import theme from '../../config/theme'
 import {bpMaxSM} from '../lib/breakpoints'
-import {Twitter, GitHub} from './social'
+import {Twitter, GitHub, LinkedIn} from './social'
 import Container from './container'
 
 const Footer = () => (
@@ -46,6 +46,7 @@ const Footer = () => (
         <div>
           <Twitter />
           <GitHub />
+          <LinkedIn />
         </div>
       </div>
     </Container>
