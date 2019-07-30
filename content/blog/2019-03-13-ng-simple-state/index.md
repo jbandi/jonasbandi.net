@@ -9,7 +9,7 @@ banner: './banner.png'
 ---
 
 > Es könnt' alles so einfach sein, isses aber nicht.  
-> [Die Fantastischen Vier](https://www.youtube.com/watch?v=hoZervGXQyI)
+> -[Die Fantastischen Vier](https://www.youtube.com/watch?v=hoZervGXQyI)
 
 State-management in Angular can be a complicated topic. There is an abundance of
 3rd party state management libraries: [NgRx](https://ngrx.io/),

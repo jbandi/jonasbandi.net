@@ -6,6 +6,7 @@ import SmallTitle from './small-title'
 import Paragraph from './paragraph'
 import List from './list'
 import Code from './code'
+import Blockquote from './blockquote'
 
 export default {
   wrapper: ({children}) => <>{children}</>,
@@ -14,6 +15,7 @@ export default {
   h3: props => <SmallTitle {...props} />,
   p: props => <Paragraph {...props} />,
   ul: props => <List {...props} />,
+  blockquote: props => <Blockquote {...props} />,
   pre: preProps => {
     const props = preToCodeBlock(preProps)
     // if there's a codeString and some props, we passed the test
