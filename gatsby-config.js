@@ -139,12 +139,14 @@ module.exports = {
           getBlogFeed({
             filePathRegex: `//content/blog//`,
             blogUrl: 'https://jonasbandi.net/blog',
+            defaultBannerImagePath: '/devlinks.png',
             output: '/blog/rss.xml',
             title: 'Jonas Bandi Blog RSS Feed',
           }),
           getBlogFeed({
             filePathRegex: `//content/devlinks//`,
             blogUrl: 'https://jonasbandi.net/devlinks',
+            defaultBannerImagePath: '/devlinks.png',
             output: '/devlinks/rss.xml',
             title: `Jonas Bandi DevLinks RSS Feed`,
           }),
@@ -176,7 +178,12 @@ module.exports = {
   ],
 }
 
-function getBlogFeed({filePathRegex, blogUrl, ...overrides}) {
+function getBlogFeed({
+  filePathRegex,
+  blogUrl,
+  defaultBannerImagePath,
+  ...overrides
+}) {
   return {
     serialize: ({query: {site, allMdx}}) => {
       const stripSlash = slug => (slug.startsWith('/') ? slug.slice(1) : slug)
@@ -184,12 +191,11 @@ function getBlogFeed({filePathRegex, blogUrl, ...overrides}) {
         const siteUrl = site.siteMetadata.siteUrl
         const url = `${siteUrl}/${stripSlash(edge.node.fields.slug)}`
 
-        let bannerImage = ''
         const banner = edge.node.frontmatter.banner
-        if (banner) {
-          const bannerSrc = banner.publicURL
-          bannerImage = `<img src=${bannerSrc}/>`
-        }
+        const bannerImageSrc = banner
+          ? banner.publicURL
+          : defaultBannerImagePath
+        const bannerImage = `<img src=${bannerImageSrc}/>`
 
         // TODO: clean this up... This shouldn't be here and it should be dynamic.
         const footer = `
