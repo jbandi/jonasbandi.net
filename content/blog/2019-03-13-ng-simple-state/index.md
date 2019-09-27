@@ -104,9 +104,9 @@ trade-offs for your specific project can you really prove that a more
 complicated architecture pays off?
 
 If you are going for a more complicated architecture, make sure that you get
-real benefits out of it. If we look at the demo from [My favorite state
-management technique in Angular — RxJS Behavior Subjects] I see more
-disadvantages than advantages:
+real benefits out of it. If we look at the demo from
+[My favorite state management technique in Angular — RxJS Behavior Subjects](https://medium.com/@rmcavin/my-favorite-state-management-technique-in-angular-rxjs-behavior-subjects-49f18daa31a7)
+I see more disadvantages than advantages:
 
 - With a Subject-based solutions like this we often have not a single source of
   truth any more: Each component instance that subscribes to the service has its

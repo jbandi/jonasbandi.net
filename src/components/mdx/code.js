@@ -4,17 +4,23 @@ import theme from 'prism-react-renderer/themes/nightOwl'
 // import theme from 'prism-react-renderer/themes/nightOwlLight'
 // import theme from 'prism-react-renderer/themes/github'
 import Highlight, {defaultProps} from 'prism-react-renderer'
+import {bpDesktopOnly} from '../../lib/breakpoints'
 
 const RE = /{([\d,-]+)}/
 
 const wrapperStyles = css`
   overflow: auto;
+  ${bpDesktopOnly} {
+    margin-left: -50px;
+    margin-right: -50px;
+  }
 `
 
 const preStyles = css`
   float: left;
   min-width: 100%;
-  overflow: initial;
+  overflow: auto;
+  background-color: #383838 !important;
 `
 
 function calculateLinesToHighlight(meta) {

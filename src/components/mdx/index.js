@@ -5,11 +5,13 @@ import Subtitle from './subtitle'
 import SmallTitle from './small-title'
 import Paragraph from './paragraph'
 import List from './list'
+import Link from './link'
 import Code from './code'
 import Blockquote from './blockquote'
 
 export default {
   wrapper: ({children}) => <>{children}</>,
+  a: props => <Link {...props} />,
   h1: props => <Title {...props} />,
   h2: props => <Subtitle {...props} />,
   h3: props => <SmallTitle {...props} />,
