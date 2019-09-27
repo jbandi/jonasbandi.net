@@ -19,8 +19,7 @@ function BlogFooter() {
         />
       </div>
       <p>
-        <strong>Jonas Bandi</strong>
-        {` is an enthusiastic software professional.`}
+        <strong>Jonas Bandi</strong> is an enthusiastic software professional.
         He is passionate about technology and methodologies - always trying to
         learn, improve and share knowledge.
       </p>
