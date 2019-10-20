@@ -130,6 +130,15 @@ function Post({data: {site, mdx, dfBanner}, pageContext: {blogPath}}) {
   //   defaultBanner = defaultDevLinksImage;
   // }
 
+  const cssMixin = slug.includes('devlink')
+    ? `
+  h4 {
+    margin-bottom: 0
+  }
+  
+  `
+    : ''
+
   return (
     <Layout
       site={site}
@@ -147,6 +156,9 @@ function Post({data: {site, mdx, dfBanner}, pageContext: {blogPath}}) {
         css={css`
           width: 100%;
           display: flex;
+
+          ${cssMixin}
+
           twitter-widget {
             margin-left: auto;
             margin-right: auto;

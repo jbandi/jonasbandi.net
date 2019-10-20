@@ -5,6 +5,7 @@ const expression = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z
 const regex = new RegExp(expression)
 
 const Link = ({children, href}) => {
+  // console.log('#################################################### LINK ##############################', __dirname, children, regex.test(children));
   if (regex.test(children)) {
     return (
       <a href={href} css={css({fontSize: 'smaller'})}>

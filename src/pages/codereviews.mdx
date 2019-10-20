@@ -1,0 +1,32 @@
+---
+title: How I do code reviews.
+---
+
+Angular:
+
+    cloc src --exclude-dir=node_modules,bower_components,.idea,.vscode,documentation --not-match-f=package --by-file-by-lang
+
+    compodoc -p tsconfig.app.json
+    compodoc -s
+
+​
+
+Copodoc Workaround Angular 8: in`tsconfig.app.json` -> remove the `files` entry
+and move content to `include`
+
+(https://github.com/compodoc/compodoc/issues/831)
+
+Understand module structure / look for lazy loading.
+
+Use source-map-explorer to check the effective JavaScript bundles in the
+production build.
+
+Look for usages of async/await
+
+Look for usages of Subjects / BehaviorSubjects
+
+Lookf for the usage of the `asnyc` pipe: `| async`
+
+Look for the usage of NgZone
+
+Look for ChangeDetectionStrategy.OnPush
