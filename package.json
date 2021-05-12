@@ -48,7 +48,7 @@
     "lodash": "^4.17.11",
     "memory-cache": "^0.2.0",
     "node-sass": "^4.12.0",
-    "nodemailer": "^5.1.1",
+    "nodemailer": "^6.4.16",
     "ow": "^0.12.0",
     "polished": "^3.0.3",
     "prism-react-renderer": "^0.1.7",
